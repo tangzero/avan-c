@@ -1,5 +1,5 @@
 #include "instructions.h"
-#include "testsuite.h"
+#include <avan/testsuite.h>
 
 CPU *cpu;
 

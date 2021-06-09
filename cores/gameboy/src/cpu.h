@@ -1,6 +1,6 @@
 #pragma once
 
-#include "types.h"
+#include <avan/types.h>
 #include <stdbool.h>
 
 typedef struct CPU
