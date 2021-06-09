@@ -1,4 +1,5 @@
-BasedOnStyle: Microsoft
+BasedOnStyle: Google
 ColumnLimit: 120
+IncludeBlocks: Merge
 AlignConsecutiveDeclarations: Consecutive
 AlignConsecutiveMacros: Consecutive
