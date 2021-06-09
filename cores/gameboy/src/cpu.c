@@ -12,21 +12,24 @@
 #define HL cpu_read(cpu, cpu->hl)
 #define U8 cpu_read_next_u8(cpu)
 
-#define set_A(value)  cpu->a = value
-#define set_B(value)  cpu->bc |= (value << 8) & 0xFF00
-#define set_C(value)  cpu->bc |= value & 0x00FF
-#define set_D(value)  cpu->de |= (value << 8) & 0xFF00
-#define set_E(value)  cpu->de |= value & 0x00FF
-#define set_H(value)  cpu->hl |= (value << 8) & 0xFF00
-#define set_L(value)  cpu->hl |= value & 0x00FF
-#define set_HL(value) cpu_write(cpu, cpu->hl, value)
+#pragma clang diagnostic push
+#pragma ide diagnostic   ignored "OCUnusedMacroInspection"
+#define setA(value)  cpu->a = value
+#define setB(value)  cpu->bc |= (value << 8) & 0xFF00
+#define setC(value)  cpu->bc |= value & 0x00FF
+#define setD(value)  cpu->de |= (value << 8) & 0xFF00
+#define setE(value)  cpu->de |= value & 0x00FF
+#define setH(value)  cpu->hl |= (value << 8) & 0xFF00
+#define setL(value)  cpu->hl |= value & 0x00FF
+#define setHL(value) cpu_write(cpu, cpu->hl, value)
+#pragma clang diagnostic pop
 
 #define ADC(value) ADC(cpu, value)
 #define ADD(value) ADD(cpu, value)
 #define AND(value) AND(cpu, value)
 #define CP(value)  CP(cpu, value)
-#define INC(value) set_##value(INC(cpu, value))
-#define DEC(value) set_##value(DEC(cpu, value))
+#define INC(value) set##value(INC(cpu, value))
+#define DEC(value) set##value(DEC(cpu, value))
 
 #define instruction(id, code)                                                                                          \
     case id: {                                                                                                         \
@@ -114,6 +117,7 @@ void cpu_execute(CPU *cpu, u8 opcode)
         instruction(0xBF, CP(A))
         instruction(0xC6, ADD(U8))
         instruction(0xCE, ADC(U8))
+        default: exit(404);
         // clang-format on
     }
 }
