@@ -14,6 +14,7 @@
 
 #pragma clang diagnostic push
 #pragma ide diagnostic   ignored "OCUnusedMacroInspection"
+
 #define setA(value)  cpu->a = value
 #define setB(value)  cpu->bc |= (value << 8) & 0xFF00
 #define setC(value)  cpu->bc |= value & 0x00FF
@@ -22,6 +23,7 @@
 #define setH(value)  cpu->hl |= (value << 8) & 0xFF00
 #define setL(value)  cpu->hl |= value & 0x00FF
 #define setHL(value) cpu_write(cpu, cpu->hl, value)
+
 #pragma clang diagnostic pop
 
 #define ADC(value) ADC(cpu, value)

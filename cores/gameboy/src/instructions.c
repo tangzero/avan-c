@@ -54,5 +54,10 @@ u8 DEC(CPU *cpu, u8 value)
 
 u8 INC(CPU *cpu, u8 value)
 {
-    return 0x0000; // TODO: implement this
+    u8 result = value + 1;
+    cpu->flags.zero = result == 0x00;
+    cpu->flags.subtraction = false;
+    cpu->flags.half_carry = (value & 0x0F) == 0x00;
+    cpu->flags.carry = false;
+    return result;
 }
