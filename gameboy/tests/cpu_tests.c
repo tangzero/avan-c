@@ -1,19 +1,16 @@
 #include "cpu.h"
-#include <unity.h>
-
-#define set_up setUp
-#define set_down tearDown
+#include "testsuite.h"
 
 CPU *cpu;
 
 void set_up(void)
 {
-    cpu = new_gameboy_cpu();
+    cpu = cpu_new();
 }
 
 void set_down(void)
 {
-    destroy_gameboy_cpu(cpu);
+    cpu_destroy(cpu);
 }
 
 void test_nothing(void)
@@ -23,7 +20,7 @@ void test_nothing(void)
 
 int main(void)
 {
-    UNITY_BEGIN();
+    SUITE_BEGIN();
     RUN_TEST(test_nothing);
-    return UNITY_END();
+    return SUITE_END();
 }

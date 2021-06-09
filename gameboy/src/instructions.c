@@ -32,3 +32,7 @@ void AND(CPU *cpu, u8 value)
     cpu->flags.half_carry = true;
     cpu->flags.carry = false;
 }
+
+void CP(CPU *cpu, u8 value)
+{
+}
