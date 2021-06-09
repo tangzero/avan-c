@@ -35,4 +35,9 @@ void AND(CPU *cpu, u8 value)
 
 void CP(CPU *cpu, u8 value)
 {
+    u16 result = cpu->a - value;
+    cpu->flags.zero = result == 0x00;
+    cpu->flags.subtraction = true;
+    cpu->flags.half_carry = (result & 0x0F) > (cpu->a & 0x0F);
+    cpu->flags.carry = result < 0x00;
 }
