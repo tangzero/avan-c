@@ -4,17 +4,11 @@
 
 #define A (cpu->a)
 #define B ((cpu->bc >> 8) & 0x00FF)
-#define set_b(cpu, value) cpu->bc |= (value << 8) & 0xFF00
 #define C (cpu->bc & 0x00FF)
-#define set_c(cpu, value) cpu->bc |= value & 0x00FF
 #define D ((cpu->de >> 8) & 0x00FF)
-#define set_d(cpu, value) cpu->de |= (value << 8) & 0xFF00
 #define E (cpu->de & 0x00FF)
-#define set_e(cpu, value) cpu->de |= value & 0x00FF
 #define H ((cpu->hl >> 8) & 0x00FF)
-#define set_h(cpu, value) cpu->hl |= (value << 8) & 0xFF00
 #define L (cpu->hl & 0x00FF)
-#define set_l(cpu, value) cpu->hl |= value & 0x00FF
 
 #define HL cpu_read(cpu, cpu->hl)
 #define U8 cpu_read_next_u8(cpu)
@@ -22,7 +16,7 @@
 #define ADC(value) ADC(cpu, value)
 #define ADD(value) ADD(cpu, value)
 #define AND(value) AND(cpu, value)
-#define CP(value) CP(cpu, value)
+#define CP(value)  CP(cpu, value)
 
 #define instruction(id, code)                                                                                          \
     case id: {                                                                                                         \
