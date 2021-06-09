@@ -5,7 +5,7 @@ file(GLOB test_files tests/*.c)
 
 include_directories(src include)
 add_library(gameboy ${source_files})
-target_link_libraries(gameboy PUBLIC avan-lib)
+target_link_libraries(gameboy PUBLIC base-core)
 target_include_directories(gameboy PUBLIC include)
 
 foreach (filename ${test_files})
