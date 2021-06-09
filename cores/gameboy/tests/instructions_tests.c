@@ -78,6 +78,17 @@ void test_inc(void)
     TEST_ASSERT_FALSE(cpu->flags.carry);
 }
 
+void test_or(void)
+{
+    cpu->a = 0b00110101;
+    OR(cpu, 0b00101101);
+    TEST_ASSERT_EQUAL_HEX8(0b00111101, cpu->a);
+    TEST_ASSERT_FALSE(cpu->flags.zero);
+    TEST_ASSERT_FALSE(cpu->flags.subtraction);
+    TEST_ASSERT_FALSE(cpu->flags.half_carry);
+    TEST_ASSERT_FALSE(cpu->flags.carry);
+}
+
 int main(void)
 {
     SUITE_BEGIN();
@@ -87,5 +98,6 @@ int main(void)
     RUN_TEST(test_cp);
     RUN_TEST(test_dec);
     RUN_TEST(test_inc);
+    RUN_TEST(test_or);
     return SUITE_END();
 }

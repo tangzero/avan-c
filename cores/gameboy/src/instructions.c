@@ -61,3 +61,12 @@ u8 INC(CPU *cpu, u8 value)
     cpu->flags.carry = false;
     return result;
 }
+
+void OR(CPU *cpu, u8 value)
+{
+    cpu->a |= value;
+    cpu->flags.zero = cpu->a == 0x00;
+    cpu->flags.subtraction = false;
+    cpu->flags.half_carry = false;
+    cpu->flags.carry = false;
+}

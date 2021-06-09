@@ -32,6 +32,7 @@
 #define CP(value)  CP(cpu, value)
 #define INC(value) set##value(INC(cpu, value))
 #define DEC(value) set##value(DEC(cpu, value))
+#define OR(value)  OR(cpu, value)
 
 #define instruction(id, code)                                                                                          \
     case id: {                                                                                                         \
@@ -109,6 +110,14 @@ void cpu_execute(CPU *cpu, u8 opcode)
         instruction(0xA5, AND(L))
         instruction(0xA6, AND(HL))
         instruction(0xA7, AND(A))
+        instruction(0xB0, OR(B))
+        instruction(0xB1, OR(C))
+        instruction(0xB2, OR(D))
+        instruction(0xB3, OR(E))
+        instruction(0xB4, OR(H))
+        instruction(0xB5, OR(L))
+        instruction(0xB6, OR(HL))
+        instruction(0xB7, OR(A))
         instruction(0xB8, CP(B))
         instruction(0xB9, CP(C))
         instruction(0xBA, CP(D))
