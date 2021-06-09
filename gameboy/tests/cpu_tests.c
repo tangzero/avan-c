@@ -8,7 +8,7 @@ void set_up(void)
     cpu = cpu_new();
 }
 
-void set_down(void)
+void tear_down(void)
 {
     cpu_destroy(cpu);
 }
