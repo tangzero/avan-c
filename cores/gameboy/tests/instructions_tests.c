@@ -97,6 +97,16 @@ void test_sub(void) {
     TEST_ASSERT_TRUE(cpu->flags.carry);
 }
 
+void test_xor(void) {
+    cpu->a = 0b00110101;
+    XOR(cpu, 0b00101101);
+    TEST_ASSERT_EQUAL_HEX8(0b00011000, cpu->a);
+    TEST_ASSERT_FALSE(cpu->flags.zero);
+    TEST_ASSERT_FALSE(cpu->flags.subtraction);
+    TEST_ASSERT_FALSE(cpu->flags.half_carry);
+    TEST_ASSERT_FALSE(cpu->flags.carry);
+}
+
 int main(void) {
     SUITE_BEGIN();
     RUN_TEST(test_adc);
@@ -108,5 +118,6 @@ int main(void) {
     RUN_TEST(test_or);
     RUN_TEST(test_sbc);
     RUN_TEST(test_sub);
+    RUN_TEST(test_xor);
     return SUITE_END();
 }

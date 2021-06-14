@@ -11,3 +11,4 @@ u8   INC(CPU *cpu, u8 value);
 void OR(CPU *cpu, u8 value);
 void SBC(CPU *cpu, u8 value);
 void SUB(CPU *cpu, u8 value);
+void XOR(CPU *cpu, u8 value);

@@ -81,3 +81,11 @@ void SUB(CPU *cpu, u8 value) {
     cpu->flags.half_carry = (value & 0x0F) > (a & 0x0F);
     cpu->flags.carry = value > a;
 }
+
+void XOR(CPU *cpu, u8 value) {
+    cpu->a ^= value;
+    cpu->flags.zero = cpu->a == 0x00;
+    cpu->flags.subtraction = false;
+    cpu->flags.half_carry = false;
+    cpu->flags.carry = false;
+}

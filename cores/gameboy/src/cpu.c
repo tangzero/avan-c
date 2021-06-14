@@ -35,6 +35,7 @@
 #define OR(value)  OR(cpu, value)
 #define SBC(value) SBC(cpu, value)
 #define SUB(value) SUB(cpu, value)
+#define XOR(value) XOR(cpu, value)
 
 #define instruction(id, code) \
     case id: {                \
@@ -117,6 +118,14 @@ void cpu_execute(CPU *cpu, u8 opcode) {
         instruction(0xA5, AND(L))
         instruction(0xA6, AND(HL))
         instruction(0xA7, AND(A))
+        instruction(0xA8, XOR(B))
+        instruction(0xA9, XOR(C))
+        instruction(0xAA, XOR(D))
+        instruction(0xAB, XOR(E))
+        instruction(0xAC, XOR(H))
+        instruction(0xAD, XOR(L))
+        instruction(0xAE, XOR(HL))
+        instruction(0xAF, XOR(A))
         instruction(0xB0, OR(B))
         instruction(0xB1, OR(C))
         instruction(0xB2, OR(D))
