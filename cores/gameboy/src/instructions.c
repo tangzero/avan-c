@@ -66,7 +66,7 @@ void OR(CPU *cpu, u8 value) {
 
 void SBC(CPU *cpu, u8 value) {
     u8 a = cpu->a;
-    cpu->a = cpu->a - value - cpu->flags.carry;
+    cpu->a -= value + cpu->flags.carry;
     cpu->flags.zero = cpu->a == 0x00;
     cpu->flags.subtraction = true;
     cpu->flags.half_carry = ((value & 0x0F) + cpu->flags.carry) > (a & 0x0F);
@@ -75,7 +75,7 @@ void SBC(CPU *cpu, u8 value) {
 
 void SUB(CPU *cpu, u8 value) {
     u8 a = cpu->a;
-    cpu->a = cpu->a - value;
+    cpu->a -= value;
     cpu->flags.zero = cpu->a == 0x00;
     cpu->flags.subtraction = true;
     cpu->flags.half_carry = (value & 0x0F) > (a & 0x0F);
