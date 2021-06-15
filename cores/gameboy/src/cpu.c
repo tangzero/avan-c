@@ -1,9 +1,12 @@
 #include "cpu.h"
+#include <memory.h>
 #include <stdlib.h>
 #include "instructions.h"
 
 CPU *cpu_new() {
-    return (CPU *)malloc(sizeof(CPU));
+    CPU *cpu = (CPU *)malloc(sizeof(CPU));
+    memset(cpu, 0, sizeof(CPU));  // clear all the junk this memory section could have
+    return cpu;
 }
 
 void cpu_destroy(CPU *cpu) {
@@ -57,8 +60,8 @@ void cpu_write(CPU *cpu, u16 address, u8 value) {
 #define ADD8(x) _add8(cpu, x)
 #define AND(x)  _and(cpu, x)
 #define CP(x)   _cp(cpu, x)
-#define DEC(x)  SET_##x(_dec(cpu, x))
-#define INC(x)  SET_##x(_inc(cpu, x))
+#define DEC8(x) SET_##x(_dec8(cpu, x))
+#define INC8(x) SET_##x(_inc8(cpu, x))
 #define OR(x)   _or(cpu, x)
 #define SBC(x)  _sbc(cpu, x)
 #define SUB(x)  _sub(cpu, x)
@@ -66,6 +69,8 @@ void cpu_write(CPU *cpu, u16 address, u8 value) {
 
 // 16-bit Arithmetic Instructions
 #define ADD16(x) _add16(cpu, x)
+#define DEC16(x) _dec16(cpu, x)
+#define INC16(x) _inc16(cpu, x)
 
 #define CASE(id, instruction) \
     case id: {                \
@@ -90,26 +95,34 @@ void cpu_execute(CPU *cpu, u8 opcode) {
         //
         //   INSTRUCTIONS
         //   code  instruction             name        cycles    bytes    flags
-        CASE(0x04, INC(B))              // INC B         1         1      Z N H -
-        CASE(0x05, DEC(B))              // DEC B         1         1      Z N H -
+        CASE(0x03, INC16(BC))           // INC BC        2         1      - - - -
+        CASE(0x04, INC8(B))             // INC B         1         1      Z N H -
+        CASE(0x05, DEC8(B))             // DEC B         1         1      Z N H -
         CASE(0x09, ADD16(BC))           // ADD HL,BC     2         1      - N H C
-        CASE(0x0C, INC(C))              // INC C         1         1      Z N H -
-        CASE(0x0D, DEC(C))              // DEC C         1         1      Z N H -
-        CASE(0x14, INC(D))              // INC D         1         1      Z N H -
-        CASE(0x15, DEC(D))              // DEC D         1         1      Z N H -
+        CASE(0x0B, DEC16(BC))           // DEC BC        2         1      - - - -
+        CASE(0x0C, INC8(C))             // INC C         1         1      Z N H -
+        CASE(0x0D, DEC8(C))             // DEC C         1         1      Z N H -
+        CASE(0x13, INC16(DE))           // INC DE        2         1      - - - -
+        CASE(0x14, INC8(D))             // INC D         1         1      Z N H -
+        CASE(0x15, DEC8(D))             // DEC D         1         1      Z N H -
         CASE(0x19, ADD16(DE))           // ADD HL,DE     2         1      - N H C
-        CASE(0x1C, INC(E))              // INC E         1         1      Z N H -
-        CASE(0x1D, DEC(E))              // DEC E         1         1      Z N H -
-        CASE(0x24, INC(H))              // INC H         1         1      Z N H -
-        CASE(0x25, DEC(H))              // DEC H         1         1      Z N H -
+        CASE(0x1B, DEC16(DE))           // DEC DE        2         1      - - - -
+        CASE(0x1C, INC8(E))             // INC E         1         1      Z N H -
+        CASE(0x1D, DEC8(E))             // DEC E         1         1      Z N H -
+        CASE(0x23, INC16(HL))           // INC HL        2         1      - - - -
+        CASE(0x24, INC8(H))             // INC H         1         1      Z N H -
+        CASE(0x25, DEC8(H))             // DEC H         1         1      Z N H -
         CASE(0x29, ADD16(HL))           // ADD HL,HL     2         1      - N H C
-        CASE(0x2C, INC(L))              // INC L         1         1      Z N H -
-        CASE(0x2D, DEC(L))              // DEC L         1         1      Z N H -
-        CASE(0x34, INC(MEMORY))         // INC (HL)      3         1      Z N H -
-        CASE(0x35, DEC(MEMORY))         // DEC (HL)      3         1      Z N H -
+        CASE(0x2B, DEC16(HL))           // DEC HL        2         1      - - - -
+        CASE(0x2C, INC8(L))             // INC L         1         1      Z N H -
+        CASE(0x2D, DEC8(L))             // DEC L         1         1      Z N H -
+        CASE(0x33, INC16(SP))           // INC SP        2         1      - - - -
+        CASE(0x34, INC8(MEMORY))        // INC (HL)      3         1      Z N H -
+        CASE(0x35, DEC8(MEMORY))        // DEC (HL)      3         1      Z N H -
         CASE(0x39, ADD16(SP))           // ADD HL,SP     2         1      - N H C
-        CASE(0x3C, INC(A))              // INC A         1         1      Z N H -
-        CASE(0x3D, DEC(A))              // DEC A         1         1      Z N H -
+        CASE(0x3B, DEC16(SP))           // DEC SP        2         1      - - - -
+        CASE(0x3C, INC8(A))             // INC A         1         1      Z N H -
+        CASE(0x3D, DEC8(A))             // DEC A         1         1      Z N H -
         CASE(0x80, ADD8(B))             // ADD A,B       1         1      Z N H C
         CASE(0x81, ADD8(C))             // ADD A,C       1         1      Z N H C
         CASE(0x82, ADD8(D))             // ADD A,D       1         1      Z N H C

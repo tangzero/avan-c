@@ -52,8 +52,8 @@ void test_cp(void) {
     TEST_ASSERT_FALSE(cpu->flags.carry);
 }
 
-void test_dec(void) {
-    u8 result = _dec(cpu, 0x1F);
+void test_dec8(void) {
+    u8 result = _dec8(cpu, 0x1F);
     TEST_ASSERT_EQUAL_HEX8(0x1E, result);
     TEST_ASSERT_FALSE(cpu->flags.zero);
     TEST_ASSERT_TRUE(cpu->flags.subtraction);
@@ -61,8 +61,8 @@ void test_dec(void) {
     TEST_ASSERT_FALSE(cpu->flags.carry);
 }
 
-void test_inc(void) {
-    u8 result = _inc(cpu, 0xB0);
+void test_inc8(void) {
+    u8 result = _inc8(cpu, 0xB0);
     TEST_ASSERT_EQUAL_HEX8(0xB1, result);
     TEST_ASSERT_FALSE(cpu->flags.zero);
     TEST_ASSERT_FALSE(cpu->flags.subtraction);
@@ -122,18 +122,38 @@ void test_add16(void) {
     TEST_ASSERT_FALSE(cpu->flags.carry);
 }
 
+void test_dec16(void) {
+    u16 result = _dec16(cpu, 0x0F0F);
+    TEST_ASSERT_EQUAL_HEX16(0x0F0E, result);
+    TEST_ASSERT_FALSE(cpu->flags.zero);
+    TEST_ASSERT_FALSE(cpu->flags.subtraction);
+    TEST_ASSERT_FALSE(cpu->flags.half_carry);
+    TEST_ASSERT_FALSE(cpu->flags.carry);
+}
+
+void test_inc16(void) {
+    u16 result = _inc16(cpu, 0xABCD);
+    TEST_ASSERT_EQUAL_HEX16(0xABCE, result);
+    TEST_ASSERT_FALSE(cpu->flags.zero);
+    TEST_ASSERT_FALSE(cpu->flags.subtraction);
+    TEST_ASSERT_FALSE(cpu->flags.half_carry);
+    TEST_ASSERT_FALSE(cpu->flags.carry);
+}
+
 int main(void) {
     SUITE_BEGIN();
     RUN_TEST(test_adc);
     RUN_TEST(test_add8);
     RUN_TEST(test_and);
     RUN_TEST(test_cp);
-    RUN_TEST(test_dec);
-    RUN_TEST(test_inc);
+    RUN_TEST(test_dec8);
+    RUN_TEST(test_inc8);
     RUN_TEST(test_or);
     RUN_TEST(test_sbc);
     RUN_TEST(test_sub);
     RUN_TEST(test_xor);
     RUN_TEST(test_add16);
+    RUN_TEST(test_dec16);
+    RUN_TEST(test_inc16);
     return SUITE_END();
 }

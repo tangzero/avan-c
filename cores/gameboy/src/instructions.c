@@ -1,5 +1,7 @@
 #include "instructions.h"
 
+#define UNUSED(x) (void)(x)
+
 void _adc(CPU *cpu, u8 value) {
     u8  a = cpu->a;
     u16 sum = a + value + cpu->flags.carry;
@@ -38,7 +40,7 @@ void _cp(CPU *cpu, u8 value) {
     cpu->flags.carry = result < 0x00;
 }
 
-u8 _dec(CPU *cpu, u8 value) {
+u8 _dec8(CPU *cpu, u8 value) {
     u8 result = value - 1;
     cpu->flags.zero = result == 0x00;
     cpu->flags.subtraction = true;
@@ -46,7 +48,7 @@ u8 _dec(CPU *cpu, u8 value) {
     return result;
 }
 
-u8 _inc(CPU *cpu, u8 value) {
+u8 _inc8(CPU *cpu, u8 value) {
     u8 result = value + 1;
     cpu->flags.zero = result == 0x00;
     cpu->flags.subtraction = false;
@@ -96,4 +98,14 @@ void _add16(CPU *cpu, u16 value) {
     cpu->flags.subtraction = false;
     cpu->flags.half_carry = ((hl & 0x0FFF) + (value & 0x0FFF)) > 0x0FFF;
     cpu->flags.carry = sum > 0x0000FFFF;
+}
+
+u16 _dec16(CPU *cpu, u16 value) {
+    UNUSED(cpu);
+    return --value;
+}
+
+u16 _inc16(CPU *cpu, u16 value) {
+    UNUSED(cpu);
+    return ++value;
 }
