@@ -31,14 +31,14 @@ void cpu_write(CPU *cpu, u16 address, u8 value) {
 #pragma clang diagnostic push
 #pragma ide diagnostic   ignored "OCUnusedMacroInspection"
 
-#define setA(x)  cpu->a = x
-#define setB(x)  cpu->bc |= (x << 8) & 0xFF00
-#define setC(x)  cpu->bc |= x & 0x00FF
-#define setD(x)  cpu->de |= (x << 8) & 0xFF00
-#define setE(x)  cpu->de |= x & 0x00FF
-#define setH(x)  cpu->hl |= (x << 8) & 0xFF00
-#define setL(x)  cpu->hl |= x & 0x00FF
-#define setHL(x) cpu_write(cpu, cpu->hl, x)
+#define SET_A(x)  cpu->a = x
+#define SET_B(x)  cpu->bc |= (x << 8) & 0xFF00
+#define SET_C(x)  cpu->bc |= x & 0x00FF
+#define SET_D(x)  cpu->de |= (x << 8) & 0xFF00
+#define SET_E(x)  cpu->de |= x & 0x00FF
+#define SET_H(x)  cpu->hl |= (x << 8) & 0xFF00
+#define SET_L(x)  cpu->hl |= x & 0x00FF
+#define SET_HL(x) cpu_write(cpu, cpu->hl, x)
 
 #pragma clang diagnostic pop
 
@@ -46,8 +46,8 @@ void cpu_write(CPU *cpu, u16 address, u8 value) {
 #define ADD(x) _add(cpu, x)
 #define AND(x) _and(cpu, x)
 #define CP(x)  _cp(cpu, x)
-#define INC(x) set##x(_inc(cpu, x))
-#define DEC(x) set##x(_dec(cpu, x))
+#define INC(x) SET_##x(_inc(cpu, x))
+#define DEC(x) SET_##x(_dec(cpu, x))
 #define OR(x)  _or(cpu, x)
 #define SBC(x) _sbc(cpu, x)
 #define SUB(x) _sub(cpu, x)
