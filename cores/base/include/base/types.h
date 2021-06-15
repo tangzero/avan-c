@@ -1,4 +1,4 @@
 #pragma once
 
-typedef unsigned short u8;
-typedef unsigned int   u16;
+typedef unsigned char  u8;
+typedef unsigned short u16;
