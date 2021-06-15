@@ -53,10 +53,10 @@ void cpu_write(CPU *cpu, u16 address, u8 value) {
 #define SUB(x) _sub(cpu, x)
 #define XOR(x) _xor(cpu, x)
 
-#define CASE(id, code) \
-    case id: {         \
-        code;          \
-        break;         \
+#define CASE(id, instruction) \
+    case id: {                \
+        instruction;          \
+        break;                \
     }
 
 void cpu_execute(CPU *cpu, u8 opcode) {
