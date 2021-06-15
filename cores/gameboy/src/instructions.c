@@ -11,7 +11,7 @@ void _adc(CPU *cpu, u8 value) {
     cpu->flags.carry = sum > 0x00FF;
 }
 
-void _add(CPU *cpu, u8 value) {
+void _add8(CPU *cpu, u8 value) {
     u8  a = cpu->a;
     u16 sum = a + value;
 
@@ -88,4 +88,15 @@ void _xor(CPU *cpu, u8 value) {
     cpu->flags.subtraction = false;
     cpu->flags.half_carry = false;
     cpu->flags.carry = false;
+}
+
+void _add16(CPU *cpu, u16 value) {
+    u16 hl = cpu->hl;
+    u32 sum = hl + value;
+
+    cpu->hl = sum & 0x0000FFFF;
+    cpu->flags.zero = cpu->hl == 0x0000;
+    cpu->flags.subtraction = false;
+    cpu->flags.half_carry = ((hl & 0x0FFF) + (value & 0x0FFF)) > 0x0FFF;
+    cpu->flags.carry = sum > 0x0000FFFF;
 }

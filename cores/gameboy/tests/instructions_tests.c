@@ -18,10 +18,10 @@ void test_adc(void) {
     TEST_ASSERT_TRUE(cpu->flags.carry);
 }
 
-void test_add(void) {
+void test_add8(void) {
     cpu->a = 0xFF;
     cpu->flags.carry = true;
-    _add(cpu, 0x0F);
+    _add8(cpu, 0x0F);
     TEST_ASSERT_EQUAL_HEX8(0x0E, cpu->a);
     TEST_ASSERT_FALSE(cpu->flags.zero);
     TEST_ASSERT_FALSE(cpu->flags.subtraction);
@@ -107,10 +107,21 @@ void test_xor(void) {
     TEST_ASSERT_FALSE(cpu->flags.carry);
 }
 
+void test_add16(void) {
+    cpu->hl = 0x0FFF;
+    cpu->flags.carry = true;
+    _add16(cpu, 0x0001);
+    TEST_ASSERT_EQUAL_HEX16(0x1000, cpu->hl);
+    TEST_ASSERT_FALSE(cpu->flags.zero);
+    TEST_ASSERT_FALSE(cpu->flags.subtraction);
+    TEST_ASSERT_TRUE(cpu->flags.half_carry);
+    TEST_ASSERT_FALSE(cpu->flags.carry);
+}
+
 int main(void) {
     SUITE_BEGIN();
     RUN_TEST(test_adc);
-    RUN_TEST(test_add);
+    RUN_TEST(test_add8);
     RUN_TEST(test_and);
     RUN_TEST(test_cp);
     RUN_TEST(test_dec);
@@ -119,5 +130,6 @@ int main(void) {
     RUN_TEST(test_sbc);
     RUN_TEST(test_sub);
     RUN_TEST(test_xor);
+    RUN_TEST(test_add16);
     return SUITE_END();
 }
