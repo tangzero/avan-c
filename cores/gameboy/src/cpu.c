@@ -88,7 +88,6 @@ void cpu_execute(CPU *cpu, u8 opcode) {
         //                NC   Execute if C is not set.
         //   vec      One of the RST vectors (0x00, 0x08, 0x10, 0x18, 0x20, 0x28, 0x30, and 0x38).
         //
-        //
         //   INSTRUCTIONS
         //   code  instruction             name        cycles    bytes    flags
         CASE(0x04, INC(B))              // INC B         1         1      Z N H -

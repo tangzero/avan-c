@@ -43,7 +43,6 @@ u8 _dec(CPU *cpu, u8 value) {
     cpu->flags.zero = result == 0x00;
     cpu->flags.subtraction = true;
     cpu->flags.half_carry = (value & 0x0F) == 0x0F;
-    cpu->flags.carry = false;
     return result;
 }
 
@@ -52,7 +51,6 @@ u8 _inc(CPU *cpu, u8 value) {
     cpu->flags.zero = result == 0x00;
     cpu->flags.subtraction = false;
     cpu->flags.half_carry = (value & 0x0F) == 0x00;
-    cpu->flags.carry = false;
     return result;
 }
 
@@ -95,7 +93,6 @@ void _add16(CPU *cpu, u16 value) {
     u32 sum = hl + value;
 
     cpu->hl = sum & 0x0000FFFF;
-    cpu->flags.zero = cpu->hl == 0x0000;
     cpu->flags.subtraction = false;
     cpu->flags.half_carry = ((hl & 0x0FFF) + (value & 0x0FFF)) > 0x0FFF;
     cpu->flags.carry = sum > 0x0000FFFF;
