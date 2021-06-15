@@ -2,7 +2,7 @@
 
 #include "cpu.h"
 
-// 8 - bit Arithmetic and Logic Instructions
+// 8-bit Arithmetic and Logic Instructions
 void _adc(CPU *cpu, u8 value);
 void _add8(CPU *cpu, u8 value);
 void _and(CPU *cpu, u8 value);

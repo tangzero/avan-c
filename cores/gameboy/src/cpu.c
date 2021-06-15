@@ -69,9 +69,9 @@ void cpu_write(CPU *cpu, u16 address, u8 value) {
         break;                \
     }
 
+// clang-format off
 void cpu_execute(CPU *cpu, u8 opcode) {
     switch (opcode) {
-        // clang-format off
         CASE(0x04, INC(B))
         CASE(0x05, DEC(B))
         CASE(0x09, ADD16(BC))
@@ -159,6 +159,6 @@ void cpu_execute(CPU *cpu, u8 opcode) {
         CASE(0xC6, ADD8(NEXT_BYTE))
         CASE(0xCE, ADC(NEXT_BYTE))
         default: exit(404);
-            // clang-format on
     }
 }
+// clang-format on
