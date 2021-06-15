@@ -72,6 +72,9 @@ void cpu_write(CPU *cpu, u16 address, u8 value) {
 #define DEC16(x) _dec16(cpu, x)
 #define INC16(x) _inc16(cpu, x)
 
+// Bit Operations Instructions
+#define BIT(bit, x) _bit(cpu, bit, x)
+
 #define CASE(id, instruction) \
     case id: {                \
         instruction;          \
@@ -123,6 +126,70 @@ void cpu_execute(CPU *cpu, u8 opcode) {
         CASE(0x3B, DEC16(SP))           // DEC SP        2         1      - - - -
         CASE(0x3C, INC8(A))             // INC A         1         1      Z N H -
         CASE(0x3D, DEC8(A))             // DEC A         1         1      Z N H -
+        CASE(0x40, BIT(0, B))           // BIT 0,B       2         2      Z N H -
+        CASE(0x41, BIT(0, C))           // BIT 0,C       2         2      Z N H -
+        CASE(0x42, BIT(0, D))           // BIT 0,D       2         2      Z N H -
+        CASE(0x43, BIT(0, E))           // BIT 0,E       2         2      Z N H -
+        CASE(0x44, BIT(0, H))           // BIT 0,H       2         2      Z N H -
+        CASE(0x45, BIT(0, L))           // BIT 0,L       2         2      Z N H -
+        CASE(0x46, BIT(0, MEMORY))      // BIT 0,(HL)    3         2      Z N H -
+        CASE(0x47, BIT(0, A))           // BIT 0,A       2         2      Z N H -
+        CASE(0x48, BIT(1, B))           // BIT 1,B       2         2      Z N H -
+        CASE(0x49, BIT(1, C))           // BIT 1,C       2         2      Z N H -
+        CASE(0x4A, BIT(1, D))           // BIT 1,D       2         2      Z N H -
+        CASE(0x4B, BIT(1, E))           // BIT 1,E       2         2      Z N H -
+        CASE(0x4C, BIT(1, H))           // BIT 1,H       2         2      Z N H -
+        CASE(0x4D, BIT(1, L))           // BIT 1,L       2         2      Z N H -
+        CASE(0x4E, BIT(1, MEMORY))      // BIT 1,(HL)    3         2      Z N H -
+        CASE(0x4F, BIT(1, A))           // BIT 1,A       2         2      Z N H -
+        CASE(0x50, BIT(2, B))           // BIT 2,B       2         2      Z N H -
+        CASE(0x51, BIT(2, C))           // BIT 2,C       2         2      Z N H -
+        CASE(0x52, BIT(2, D))           // BIT 2,D       2         2      Z N H -
+        CASE(0x53, BIT(2, E))           // BIT 2,E       2         2      Z N H -
+        CASE(0x54, BIT(2, H))           // BIT 2,H       2         2      Z N H -
+        CASE(0x55, BIT(2, L))           // BIT 2,L       2         2      Z N H -
+        CASE(0x56, BIT(2, MEMORY))      // BIT 2,(HL)    3         2      Z N H -
+        CASE(0x57, BIT(2, A))           // BIT 2,A       2         2      Z N H -
+        CASE(0x58, BIT(3, B))           // BIT 3,B       2         2      Z N H -
+        CASE(0x59, BIT(3, C))           // BIT 3,C       2         2      Z N H -
+        CASE(0x5A, BIT(3, D))           // BIT 3,D       2         2      Z N H -
+        CASE(0x5B, BIT(3, E))           // BIT 3,E       2         2      Z N H -
+        CASE(0x5C, BIT(3, H))           // BIT 3,H       2         2      Z N H -
+        CASE(0x5D, BIT(3, L))           // BIT 3,L       2         2      Z N H -
+        CASE(0x5E, BIT(3, MEMORY))      // BIT 3,(HL)    3         2      Z N H -
+        CASE(0x5F, BIT(3, A))           // BIT 3,A       2         2      Z N H -
+        CASE(0x60, BIT(4, B))           // BIT 4,B       2         2      Z N H -
+        CASE(0x61, BIT(4, C))           // BIT 4,C       2         2      Z N H -
+        CASE(0x62, BIT(4, D))           // BIT 4,D       2         2      Z N H -
+        CASE(0x63, BIT(4, E))           // BIT 4,E       2         2      Z N H -
+        CASE(0x64, BIT(4, H))           // BIT 4,H       2         2      Z N H -
+        CASE(0x65, BIT(4, L))           // BIT 4,L       2         2      Z N H -
+        CASE(0x66, BIT(4, MEMORY))      // BIT 4,(HL)    3         2      Z N H -
+        CASE(0x67, BIT(4, A))           // BIT 4,A       2         2      Z N H -
+        CASE(0x68, BIT(5, B))           // BIT 5,B       2         2      Z N H -
+        CASE(0x69, BIT(5, C))           // BIT 5,C       2         2      Z N H -
+        CASE(0x6A, BIT(5, D))           // BIT 5,D       2         2      Z N H -
+        CASE(0x6B, BIT(5, E))           // BIT 5,E       2         2      Z N H -
+        CASE(0x6C, BIT(5, H))           // BIT 5,H       2         2      Z N H -
+        CASE(0x6D, BIT(5, L))           // BIT 5,L       2         2      Z N H -
+        CASE(0x6E, BIT(5, MEMORY))      // BIT 5,(HL)    3         2      Z N H -
+        CASE(0x6F, BIT(5, A))           // BIT 5,A       2         2      Z N H -
+        CASE(0x70, BIT(6, B))           // BIT 6,B       2         2      Z N H -
+        CASE(0x71, BIT(6, C))           // BIT 6,C       2         2      Z N H -
+        CASE(0x72, BIT(6, D))           // BIT 6,D       2         2      Z N H -
+        CASE(0x73, BIT(6, E))           // BIT 6,E       2         2      Z N H -
+        CASE(0x74, BIT(6, H))           // BIT 6,H       2         2      Z N H -
+        CASE(0x75, BIT(6, L))           // BIT 6,L       2         2      Z N H -
+        CASE(0x76, BIT(6, MEMORY))      // BIT 6,(HL)    3         2      Z N H -
+        CASE(0x77, BIT(6, A))           // BIT 6,A       2         2      Z N H -
+        CASE(0x78, BIT(7, B))           // BIT 7,B       2         2      Z N H -
+        CASE(0x79, BIT(7, C))           // BIT 7,C       2         2      Z N H -
+        CASE(0x7A, BIT(7, D))           // BIT 7,D       2         2      Z N H -
+        CASE(0x7B, BIT(7, E))           // BIT 7,E       2         2      Z N H -
+        CASE(0x7C, BIT(7, H))           // BIT 7,H       2         2      Z N H -
+        CASE(0x7D, BIT(7, L))           // BIT 7,L       2         2      Z N H -
+        CASE(0x7E, BIT(7, MEMORY))      // BIT 7,(HL)    3         2      Z N H -
+        CASE(0x7F, BIT(7, A))           // BIT 7,A       2         2      Z N H -
         CASE(0x80, ADD8(B))             // ADD A,B       1         1      Z N H C
         CASE(0x81, ADD8(C))             // ADD A,C       1         1      Z N H C
         CASE(0x82, ADD8(D))             // ADD A,D       1         1      Z N H C

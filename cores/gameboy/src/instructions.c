@@ -109,3 +109,9 @@ u16 _inc16(CPU *cpu, u16 value) {
     UNUSED(cpu);
     return ++value;
 }
+
+void _bit(CPU *cpu, u8 bit, u8 value) {
+    cpu->flags.zero = (value & (1 << bit)) == 0x00;
+    cpu->flags.subtraction = false;
+    cpu->flags.half_carry = true;
+}

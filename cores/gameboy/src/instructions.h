@@ -18,3 +18,6 @@ void _xor(CPU *cpu, u8 value);
 void _add16(CPU *cpu, u16 value);
 u16  _dec16(CPU *cpu, u16 value);
 u16  _inc16(CPU *cpu, u16 value);
+
+// Bit Operations Instructions
+void _bit(CPU *cpu, u8 bit, u8 value);

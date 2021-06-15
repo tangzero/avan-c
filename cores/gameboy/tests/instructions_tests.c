@@ -140,6 +140,14 @@ void test_inc16(void) {
     TEST_ASSERT_FALSE(cpu->flags.carry);
 }
 
+void test_bit(void) {
+    _bit(cpu, 5, 0b00010101);
+    TEST_ASSERT_TRUE(cpu->flags.zero);
+    TEST_ASSERT_FALSE(cpu->flags.subtraction);
+    TEST_ASSERT_TRUE(cpu->flags.half_carry);
+    TEST_ASSERT_FALSE(cpu->flags.carry);
+}
+
 int main(void) {
     SUITE_BEGIN();
     RUN_TEST(test_adc);
@@ -155,5 +163,6 @@ int main(void) {
     RUN_TEST(test_add16);
     RUN_TEST(test_dec16);
     RUN_TEST(test_inc16);
+    RUN_TEST(test_bit);
     return SUITE_END();
 }
