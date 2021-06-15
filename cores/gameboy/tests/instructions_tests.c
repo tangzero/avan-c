@@ -10,7 +10,7 @@ void tear_down(void) { cpu_destroy(cpu); }
 void test_adc(void) {
     cpu->a = 0xF0;
     cpu->flags.carry = true;
-    ADC(cpu, 0x0F);
+    _adc(cpu, 0x0F);
     TEST_ASSERT_EQUAL_HEX8(0x00, cpu->a);
     TEST_ASSERT_TRUE(cpu->flags.zero);
     TEST_ASSERT_FALSE(cpu->flags.subtraction);
@@ -21,7 +21,7 @@ void test_adc(void) {
 void test_add(void) {
     cpu->a = 0xFF;
     cpu->flags.carry = true;
-    ADD(cpu, 0x0F);
+    _add(cpu, 0x0F);
     TEST_ASSERT_EQUAL_HEX8(0x0E, cpu->a);
     TEST_ASSERT_FALSE(cpu->flags.zero);
     TEST_ASSERT_FALSE(cpu->flags.subtraction);
@@ -31,7 +31,7 @@ void test_add(void) {
 
 void test_and(void) {
     cpu->a = 0b00110101;
-    AND(cpu, 0b00101101);
+    _and(cpu, 0b00101101);
     TEST_ASSERT_EQUAL_HEX8(0b00100101, cpu->a);
     TEST_ASSERT_FALSE(cpu->flags.zero);
     TEST_ASSERT_FALSE(cpu->flags.subtraction);
@@ -41,7 +41,7 @@ void test_and(void) {
 
 void test_cp(void) {
     cpu->a = 0x05;
-    CP(cpu, 0xFD);
+    _cp(cpu, 0xFD);
     TEST_ASSERT_FALSE(cpu->flags.zero);
     TEST_ASSERT_TRUE(cpu->flags.subtraction);
     TEST_ASSERT_TRUE(cpu->flags.half_carry);
@@ -49,7 +49,7 @@ void test_cp(void) {
 }
 
 void test_dec(void) {
-    u8 result = DEC(cpu, 0x1F);
+    u8 result = _dec(cpu, 0x1F);
     TEST_ASSERT_EQUAL_HEX8(0x1E, result);
     TEST_ASSERT_FALSE(cpu->flags.zero);
     TEST_ASSERT_TRUE(cpu->flags.subtraction);
@@ -58,7 +58,7 @@ void test_dec(void) {
 }
 
 void test_inc(void) {
-    u8 result = INC(cpu, 0xB0);
+    u8 result = _inc(cpu, 0xB0);
     TEST_ASSERT_EQUAL_HEX8(0xB1, result);
     TEST_ASSERT_FALSE(cpu->flags.zero);
     TEST_ASSERT_FALSE(cpu->flags.subtraction);
@@ -68,7 +68,7 @@ void test_inc(void) {
 
 void test_or(void) {
     cpu->a = 0b00110101;
-    OR(cpu, 0b00101101);
+    _or(cpu, 0b00101101);
     TEST_ASSERT_EQUAL_HEX8(0b00111101, cpu->a);
     TEST_ASSERT_FALSE(cpu->flags.zero);
     TEST_ASSERT_FALSE(cpu->flags.subtraction);
@@ -79,7 +79,7 @@ void test_or(void) {
 void test_sbc(void) {
     cpu->a = 0x1A;
     cpu->flags.carry = true;
-    SBC(cpu, 0x1F);
+    _sbc(cpu, 0x1F);
     TEST_ASSERT_EQUAL_HEX8(0xFA, cpu->a);
     TEST_ASSERT_FALSE(cpu->flags.zero);
     TEST_ASSERT_TRUE(cpu->flags.subtraction);
@@ -89,7 +89,7 @@ void test_sbc(void) {
 
 void test_sub(void) {
     cpu->a = 0xCC;
-    SUB(cpu, 0xDC);
+    _sub(cpu, 0xDC);
     TEST_ASSERT_EQUAL_HEX8(0xF0, cpu->a);
     TEST_ASSERT_FALSE(cpu->flags.zero);
     TEST_ASSERT_TRUE(cpu->flags.subtraction);
@@ -99,7 +99,7 @@ void test_sub(void) {
 
 void test_xor(void) {
     cpu->a = 0b00110101;
-    XOR(cpu, 0b00101101);
+    _xor(cpu, 0b00101101);
     TEST_ASSERT_EQUAL_HEX8(0b00011000, cpu->a);
     TEST_ASSERT_FALSE(cpu->flags.zero);
     TEST_ASSERT_FALSE(cpu->flags.subtraction);

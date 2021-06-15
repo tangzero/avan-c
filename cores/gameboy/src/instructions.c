@@ -1,6 +1,6 @@
 #include "instructions.h"
 
-void ADC(CPU *cpu, u8 value) {
+void _adc(CPU *cpu, u8 value) {
     u8  a = cpu->a;
     u16 sum = a + value + cpu->flags.carry;
 
@@ -11,7 +11,7 @@ void ADC(CPU *cpu, u8 value) {
     cpu->flags.carry = sum > 0x00FF;
 }
 
-void ADD(CPU *cpu, u8 value) {
+void _add(CPU *cpu, u8 value) {
     u8  a = cpu->a;
     u16 sum = a + value;
 
@@ -22,7 +22,7 @@ void ADD(CPU *cpu, u8 value) {
     cpu->flags.carry = sum > 0x00FF;
 }
 
-void AND(CPU *cpu, u8 value) {
+void _and(CPU *cpu, u8 value) {
     cpu->a &= value;
     cpu->flags.zero = cpu->a == 0x00;
     cpu->flags.subtraction = false;
@@ -30,7 +30,7 @@ void AND(CPU *cpu, u8 value) {
     cpu->flags.carry = false;
 }
 
-void CP(CPU *cpu, u8 value) {
+void _cp(CPU *cpu, u8 value) {
     u16 result = cpu->a - value;
     cpu->flags.zero = result == 0x00;
     cpu->flags.subtraction = true;
@@ -38,7 +38,7 @@ void CP(CPU *cpu, u8 value) {
     cpu->flags.carry = result < 0x00;
 }
 
-u8 DEC(CPU *cpu, u8 value) {
+u8 _dec(CPU *cpu, u8 value) {
     u8 result = value - 1;
     cpu->flags.zero = result == 0x00;
     cpu->flags.subtraction = true;
@@ -47,7 +47,7 @@ u8 DEC(CPU *cpu, u8 value) {
     return result;
 }
 
-u8 INC(CPU *cpu, u8 value) {
+u8 _inc(CPU *cpu, u8 value) {
     u8 result = value + 1;
     cpu->flags.zero = result == 0x00;
     cpu->flags.subtraction = false;
@@ -56,7 +56,7 @@ u8 INC(CPU *cpu, u8 value) {
     return result;
 }
 
-void OR(CPU *cpu, u8 value) {
+void _or(CPU *cpu, u8 value) {
     cpu->a |= value;
     cpu->flags.zero = cpu->a == 0x00;
     cpu->flags.subtraction = false;
@@ -64,7 +64,7 @@ void OR(CPU *cpu, u8 value) {
     cpu->flags.carry = false;
 }
 
-void SBC(CPU *cpu, u8 value) {
+void _sbc(CPU *cpu, u8 value) {
     u8 a = cpu->a;
     cpu->a -= value + cpu->flags.carry;
     cpu->flags.zero = cpu->a == 0x00;
@@ -73,7 +73,7 @@ void SBC(CPU *cpu, u8 value) {
     cpu->flags.carry = (value + cpu->flags.carry) > a;
 }
 
-void SUB(CPU *cpu, u8 value) {
+void _sub(CPU *cpu, u8 value) {
     u8 a = cpu->a;
     cpu->a -= value;
     cpu->flags.zero = cpu->a == 0x00;
@@ -82,7 +82,7 @@ void SUB(CPU *cpu, u8 value) {
     cpu->flags.carry = value > a;
 }
 
-void XOR(CPU *cpu, u8 value) {
+void _xor(CPU *cpu, u8 value) {
     cpu->a ^= value;
     cpu->flags.zero = cpu->a == 0x00;
     cpu->flags.subtraction = false;

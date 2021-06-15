@@ -2,47 +2,6 @@
 #include <stdlib.h>
 #include "instructions.h"
 
-#define A  cpu->a
-#define B  ((cpu->bc >> 8) & 0x00FF)
-#define C  (cpu->bc & 0x00FF)
-#define D  ((cpu->de >> 8) & 0x00FF)
-#define E  (cpu->de & 0x00FF)
-#define H  ((cpu->hl >> 8) & 0x00FF)
-#define L  (cpu->hl & 0x00FF)
-#define HL cpu_read(cpu, cpu->hl)
-#define U8 cpu_read_next_u8(cpu)
-
-#pragma clang diagnostic push
-#pragma ide diagnostic   ignored "OCUnusedMacroInspection"
-
-#define setA(value)  cpu->a = value
-#define setB(value)  cpu->bc |= (value << 8) & 0xFF00
-#define setC(value)  cpu->bc |= value & 0x00FF
-#define setD(value)  cpu->de |= (value << 8) & 0xFF00
-#define setE(value)  cpu->de |= value & 0x00FF
-#define setH(value)  cpu->hl |= (value << 8) & 0xFF00
-#define setL(value)  cpu->hl |= value & 0x00FF
-#define setHL(value) cpu_write(cpu, cpu->hl, value)
-
-#pragma clang diagnostic pop
-
-#define ADC(value) ADC(cpu, value)
-#define ADD(value) ADD(cpu, value)
-#define AND(value) AND(cpu, value)
-#define CP(value)  CP(cpu, value)
-#define INC(value) set##value(INC(cpu, value))
-#define DEC(value) set##value(DEC(cpu, value))
-#define OR(value)  OR(cpu, value)
-#define SBC(value) SBC(cpu, value)
-#define SUB(value) SUB(cpu, value)
-#define XOR(value) XOR(cpu, value)
-
-#define instruction(id, code) \
-    case id: {                \
-        code;                 \
-        break;                \
-    }
-
 CPU *cpu_new() { return (CPU *)malloc(sizeof(CPU)); }
 
 void cpu_destroy(CPU *cpu) { free(cpu); }
@@ -59,92 +18,133 @@ void cpu_write(CPU *cpu, u16 address, u8 value) {
     // TODO: implement this
 }
 
+#define A  cpu->a
+#define B  ((cpu->bc >> 8) & 0x00FF)
+#define C  (cpu->bc & 0x00FF)
+#define D  ((cpu->de >> 8) & 0x00FF)
+#define E  (cpu->de & 0x00FF)
+#define H  ((cpu->hl >> 8) & 0x00FF)
+#define L  (cpu->hl & 0x00FF)
+#define HL cpu_read(cpu, cpu->hl)
+#define U8 cpu_read_next_u8(cpu)
+
+#pragma clang diagnostic push
+#pragma ide diagnostic   ignored "OCUnusedMacroInspection"
+
+#define setA(x)  cpu->a = x
+#define setB(x)  cpu->bc |= (x << 8) & 0xFF00
+#define setC(x)  cpu->bc |= x & 0x00FF
+#define setD(x)  cpu->de |= (x << 8) & 0xFF00
+#define setE(x)  cpu->de |= x & 0x00FF
+#define setH(x)  cpu->hl |= (x << 8) & 0xFF00
+#define setL(x)  cpu->hl |= x & 0x00FF
+#define setHL(x) cpu_write(cpu, cpu->hl, x)
+
+#pragma clang diagnostic pop
+
+#define ADC(x) _adc(cpu, x)
+#define ADD(x) _add(cpu, x)
+#define AND(x) _and(cpu, x)
+#define CP(x)  _cp(cpu, x)
+#define INC(x) set##x(_inc(cpu, x))
+#define DEC(x) set##x(_dec(cpu, x))
+#define OR(x)  _or(cpu, x)
+#define SBC(x) _sbc(cpu, x)
+#define SUB(x) _sub(cpu, x)
+#define XOR(x) _xor(cpu, x)
+
+#define CASE(id, code) \
+    case id: {         \
+        code;          \
+        break;         \
+    }
+
 void cpu_execute(CPU *cpu, u8 opcode) {
     switch (opcode) {
         // clang-format off
-        instruction(0x04, INC(B))
-        instruction(0x05, DEC(B))
-        instruction(0x0C, INC(C))
-        instruction(0x0D, DEC(C))
-        instruction(0x14, INC(D))
-        instruction(0x15, DEC(D))
-        instruction(0x1C, INC(E))
-        instruction(0x1D, DEC(E))
-        instruction(0x24, INC(H))
-        instruction(0x25, DEC(H))
-        instruction(0x2C, INC(L))
-        instruction(0x2D, DEC(L))
-        instruction(0x34, INC(HL))
-        instruction(0x35, DEC(HL))
-        instruction(0x3C, INC(A))
-        instruction(0x3D, DEC(A))
-        instruction(0x80, ADD(B))
-        instruction(0x81, ADD(C))
-        instruction(0x82, ADD(D))
-        instruction(0x83, ADD(E))
-        instruction(0x84, ADD(H))
-        instruction(0x85, ADD(L))
-        instruction(0x86, ADD(HL))
-        instruction(0x87, ADD(A))
-        instruction(0x88, ADC(B))
-        instruction(0x89, ADC(C))
-        instruction(0x8A, ADC(D))
-        instruction(0x8B, ADC(E))
-        instruction(0x8C, ADC(H))
-        instruction(0x8D, ADC(L))
-        instruction(0x8E, ADC(HL))
-        instruction(0x8F, ADC(A))
-        instruction(0x90, SUB(B))
-        instruction(0x91, SUB(C))
-        instruction(0x92, SUB(D))
-        instruction(0x93, SUB(E))
-        instruction(0x94, SUB(H))
-        instruction(0x95, SUB(L))
-        instruction(0x96, SUB(HL))
-        instruction(0x97, SUB(A))
-        instruction(0x98, SBC(B))
-        instruction(0x99, SBC(C))
-        instruction(0x9A, SBC(D))
-        instruction(0x9B, SBC(E))
-        instruction(0x9C, SBC(H))
-        instruction(0x9D, SBC(L))
-        instruction(0x9E, SBC(HL))
-        instruction(0x9F, SBC(A))
-        instruction(0xA0, AND(B))
-        instruction(0xA1, AND(C))
-        instruction(0xA2, AND(D))
-        instruction(0xA3, AND(E))
-        instruction(0xA4, AND(H))
-        instruction(0xA5, AND(L))
-        instruction(0xA6, AND(HL))
-        instruction(0xA7, AND(A))
-        instruction(0xA8, XOR(B))
-        instruction(0xA9, XOR(C))
-        instruction(0xAA, XOR(D))
-        instruction(0xAB, XOR(E))
-        instruction(0xAC, XOR(H))
-        instruction(0xAD, XOR(L))
-        instruction(0xAE, XOR(HL))
-        instruction(0xAF, XOR(A))
-        instruction(0xB0, OR(B))
-        instruction(0xB1, OR(C))
-        instruction(0xB2, OR(D))
-        instruction(0xB3, OR(E))
-        instruction(0xB4, OR(H))
-        instruction(0xB5, OR(L))
-        instruction(0xB6, OR(HL))
-        instruction(0xB7, OR(A))
-        instruction(0xB8, CP(B))
-        instruction(0xB9, CP(C))
-        instruction(0xBA, CP(D))
-        instruction(0xBB, CP(E))
-        instruction(0xBC, CP(H))
-        instruction(0xBD, CP(L))
-        instruction(0xBE, CP(HL))
-        instruction(0xBF, CP(A))
-        instruction(0xC6, ADD(U8))
-        instruction(0xCE, ADC(U8))
+        CASE(0x04, INC(B))
+        CASE(0x05, DEC(B))
+        CASE(0x0C, INC(C))
+        CASE(0x0D, DEC(C))
+        CASE(0x14, INC(D))
+        CASE(0x15, DEC(D))
+        CASE(0x1C, INC(E))
+        CASE(0x1D, DEC(E))
+        CASE(0x24, INC(H))
+        CASE(0x25, DEC(H))
+        CASE(0x2C, INC(L))
+        CASE(0x2D, DEC(L))
+        CASE(0x34, INC(HL))
+        CASE(0x35, DEC(HL))
+        CASE(0x3C, INC(A))
+        CASE(0x3D, DEC(A))
+        CASE(0x80, ADD(B))
+        CASE(0x81, ADD(C))
+        CASE(0x82, ADD(D))
+        CASE(0x83, ADD(E))
+        CASE(0x84, ADD(H))
+        CASE(0x85, ADD(L))
+        CASE(0x86, ADD(HL))
+        CASE(0x87, ADD(A))
+        CASE(0x88, ADC(B))
+        CASE(0x89, ADC(C))
+        CASE(0x8A, ADC(D))
+        CASE(0x8B, ADC(E))
+        CASE(0x8C, ADC(H))
+        CASE(0x8D, ADC(L))
+        CASE(0x8E, ADC(HL))
+        CASE(0x8F, ADC(A))
+        CASE(0x90, SUB(B))
+        CASE(0x91, SUB(C))
+        CASE(0x92, SUB(D))
+        CASE(0x93, SUB(E))
+        CASE(0x94, SUB(H))
+        CASE(0x95, SUB(L))
+        CASE(0x96, SUB(HL))
+        CASE(0x97, SUB(A))
+        CASE(0x98, SBC(B))
+        CASE(0x99, SBC(C))
+        CASE(0x9A, SBC(D))
+        CASE(0x9B, SBC(E))
+        CASE(0x9C, SBC(H))
+        CASE(0x9D, SBC(L))
+        CASE(0x9E, SBC(HL))
+        CASE(0x9F, SBC(A))
+        CASE(0xA0, AND(B))
+        CASE(0xA1, AND(C))
+        CASE(0xA2, AND(D))
+        CASE(0xA3, AND(E))
+        CASE(0xA4, AND(H))
+        CASE(0xA5, AND(L))
+        CASE(0xA6, AND(HL))
+        CASE(0xA7, AND(A))
+        CASE(0xA8, XOR(B))
+        CASE(0xA9, XOR(C))
+        CASE(0xAA, XOR(D))
+        CASE(0xAB, XOR(E))
+        CASE(0xAC, XOR(H))
+        CASE(0xAD, XOR(L))
+        CASE(0xAE, XOR(HL))
+        CASE(0xAF, XOR(A))
+        CASE(0xB0, OR(B))
+        CASE(0xB1, OR(C))
+        CASE(0xB2, OR(D))
+        CASE(0xB3, OR(E))
+        CASE(0xB4, OR(H))
+        CASE(0xB5, OR(L))
+        CASE(0xB6, OR(HL))
+        CASE(0xB7, OR(A))
+        CASE(0xB8, CP(B))
+        CASE(0xB9, CP(C))
+        CASE(0xBA, CP(D))
+        CASE(0xBB, CP(E))
+        CASE(0xBC, CP(H))
+        CASE(0xBD, CP(L))
+        CASE(0xBE, CP(HL))
+        CASE(0xBF, CP(A))
+        CASE(0xC6, ADD(U8))
+        CASE(0xCE, ADC(U8))
         default: exit(404);
-        // clang-format on
+            // clang-format on
     }
 }
