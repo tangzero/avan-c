@@ -3,9 +3,13 @@
 
 CPU *cpu;
 
-void set_up(void) { cpu = cpu_new(); }
+void set_up(void) {
+    cpu = cpu_new();
+}
 
-void tear_down(void) { cpu_destroy(cpu); }
+void tear_down(void) {
+    cpu_destroy(cpu);
+}
 
 void test_adc(void) {
     cpu->a = 0xF0;

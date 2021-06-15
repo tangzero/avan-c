@@ -2,9 +2,13 @@
 #include <stdlib.h>
 #include "instructions.h"
 
-CPU *cpu_new() { return (CPU *)malloc(sizeof(CPU)); }
+CPU *cpu_new() {
+    return (CPU *)malloc(sizeof(CPU));
+}
 
-void cpu_destroy(CPU *cpu) { free(cpu); }
+void cpu_destroy(CPU *cpu) {
+    free(cpu);
+}
 
 u8 cpu_read(CPU *cpu, u16 address) {
     return 0x0000;  // TODO: implement this

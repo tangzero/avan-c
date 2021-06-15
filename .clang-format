@@ -4,3 +4,4 @@ IndentWidth: 4
 IncludeBlocks: Merge
 AlignConsecutiveDeclarations: Consecutive
 AlignConsecutiveMacros: Consecutive
+AllowShortFunctionsOnASingleLine: None
