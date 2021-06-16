@@ -115,3 +115,8 @@ void _bit(CPU *cpu, u8 bit, u8 value) {
     cpu->flags.subtraction = false;
     cpu->flags.half_carry = true;
 }
+
+u8 _res(CPU *cpu, u8 bit, u8 value) {
+    UNUSED(cpu);
+    return value ^ (1 << bit);
+}

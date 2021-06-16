@@ -21,3 +21,4 @@ u16  _inc16(CPU *cpu, u16 value);
 
 // Bit Operations Instructions
 void _bit(CPU *cpu, u8 bit, u8 value);
+u8   _res(CPU *cpu, u8 bit, u8 value);

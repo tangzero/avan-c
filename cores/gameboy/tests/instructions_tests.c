@@ -148,6 +148,15 @@ void test_bit(void) {
     TEST_ASSERT_FALSE(cpu->flags.carry);
 }
 
+void test_res(void) {
+    u8 result = _res(cpu, 5, 0b11111111);
+    TEST_ASSERT_EQUAL_HEX8(0b11011111, result);
+    TEST_ASSERT_FALSE(cpu->flags.zero);
+    TEST_ASSERT_FALSE(cpu->flags.subtraction);
+    TEST_ASSERT_FALSE(cpu->flags.half_carry);
+    TEST_ASSERT_FALSE(cpu->flags.carry);
+}
+
 int main(void) {
     SUITE_BEGIN();
     RUN_TEST(test_adc);
@@ -164,5 +173,6 @@ int main(void) {
     RUN_TEST(test_dec16);
     RUN_TEST(test_inc16);
     RUN_TEST(test_bit);
+    RUN_TEST(test_res);
     return SUITE_END();
 }
