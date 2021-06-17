@@ -1,7 +1,4 @@
-BasedOnStyle: Google
+BasedOnStyle: Microsoft
 ColumnLimit: 120
-IndentWidth: 4
-IncludeBlocks: Merge
-AlignConsecutiveDeclarations: Consecutive
 AlignConsecutiveMacros: Consecutive
-AllowShortFunctionsOnASingleLine: None
+BreakBeforeBraces: Attach

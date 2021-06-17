@@ -1,5 +1,5 @@
-#include <base/testsuite.h>
 #include "cpu.h"
+#include <base/testsuite.h>
 
 CPU *cpu;
 
