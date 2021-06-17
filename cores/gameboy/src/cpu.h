@@ -18,10 +18,3 @@ typedef struct CPU {
 
 CPU *cpu_new();
 void cpu_destroy(CPU *cpu);
-
-u8 cpu_read(CPU *cpu, u16 address);
-u8 cpu_read_next_byte(CPU *cpu);
-
-void cpu_write(CPU *cpu, u16 address, u8 value);
-
-void cpu_execute(CPU *cpu, u8 opcode);

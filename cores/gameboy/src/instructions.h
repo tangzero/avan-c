@@ -111,9 +111,9 @@
     CARRY = false;
 
 #define ADD16(value)                                                                                                   \
-    u16 hl = cpu->hl;                                                                                                  \
+    u16 hl = HL;                                                                                                       \
     u32 sum = hl + value;                                                                                              \
-    cpu->hl = sum & 0x0000FFFF;                                                                                        \
+    HL = sum & 0x0000FFFF;                                                                                             \
     SUBTRACTION = false;                                                                                               \
     HALF_CARRY = ((hl & 0x0FFF) + (value & 0x0FFF)) > 0x0FFF;                                                          \
     CARRY = sum > 0x0000FFFF;
