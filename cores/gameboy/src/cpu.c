@@ -338,8 +338,8 @@ void cpu_execute(CPU *cpu, u8 opcode) {
         OP(0xBE, CP(MEMORY))          // CP A,(HL)     2         1      Z 1 H C
         OP(0xBF, CP(A))               // CP A,A        1         1      Z 1 H C
         OP(0xCB, EXECUTE_CB)          // execute instructions prefixed with 0xCB
-        OP(0xC6, ADD8(BYTE))          // ADD A,n8      2         2      Z N H C
-        OP(0xCE, ADC(BYTE))           // ADC A,n8      2         2      Z N H C
+        OP(0xC6, ADD8(BYTE))          // ADD A,n8      2         2      Z 0 H C
+        OP(0xCE, ADC(BYTE))           // ADC A,n8      2         2      Z 0 H C
         default: exit(404);
     }
 }
