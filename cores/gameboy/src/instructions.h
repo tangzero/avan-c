@@ -131,4 +131,9 @@
 
 #define SET(bit, value) SET_##value(value | (1 << bit));
 
-#define SWAP(value) SET_##value((value >> 4) | (value << 4));
+#define SWAP(value)                                                                                                    \
+    SET_##value((value >> 4) | (value << 4));                                                                          \
+    ZERO = value == 0x00;                                                                                              \
+    SUBTRACTION = false;                                                                                               \
+    HALF_CARRY = false;                                                                                                \
+    CARRY = false;
