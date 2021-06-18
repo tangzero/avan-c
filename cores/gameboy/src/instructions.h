@@ -35,105 +35,225 @@
 #define SET_MEMORY(x) cpu_write(cpu, HL, x)
 
 #define ADC(value)                                                                                                     \
-    u8 a = A;                                                                                                          \
-    u16 sum = a + value + CARRY;                                                                                       \
-    A = sum & 0x00FF;                                                                                                  \
-    ZERO = A == 0x00;                                                                                                  \
-    SUBTRACTION = false;                                                                                               \
-    HALF_CARRY = ((a & 0x0F) + (value & 0x0F) + CARRY) > 0x0F;                                                         \
-    CARRY = sum > 0x00FF;
+    ({                                                                                                                 \
+        u8 a = A;                                                                                                      \
+        u16 sum = a + value + CARRY;                                                                                   \
+        A = sum & 0x00FF;                                                                                              \
+        ZERO = A == 0x00;                                                                                              \
+        SUBTRACTION = false;                                                                                           \
+        HALF_CARRY = ((a & 0x0F) + (value & 0x0F) + CARRY) > 0x0F;                                                     \
+        CARRY = sum > 0x00FF;                                                                                          \
+    })
 
 #define ADD8(value)                                                                                                    \
-    u8 a = A;                                                                                                          \
-    u16 sum = a + value;                                                                                               \
-    A = sum & 0x00FF;                                                                                                  \
-    ZERO = A == 0x00;                                                                                                  \
-    SUBTRACTION = false;                                                                                               \
-    HALF_CARRY = ((a & 0x0F) + (value & 0x0F)) > 0x0F;                                                                 \
-    CARRY = sum > 0x00FF;
+    ({                                                                                                                 \
+        u8 a = A;                                                                                                      \
+        u16 sum = a + value;                                                                                           \
+        A = sum & 0x00FF;                                                                                              \
+        ZERO = A == 0x00;                                                                                              \
+        SUBTRACTION = false;                                                                                           \
+        HALF_CARRY = ((a & 0x0F) + (value & 0x0F)) > 0x0F;                                                             \
+        CARRY = sum > 0x00FF;                                                                                          \
+    })
 
 #define AND(value)                                                                                                     \
-    A &= value;                                                                                                        \
-    ZERO = A == 0x00;                                                                                                  \
-    SUBTRACTION = false;                                                                                               \
-    HALF_CARRY = true;                                                                                                 \
-    CARRY = false;
+    ({                                                                                                                 \
+        A &= value;                                                                                                    \
+        ZERO = A == 0x00;                                                                                              \
+        SUBTRACTION = false;                                                                                           \
+        HALF_CARRY = true;                                                                                             \
+        CARRY = false;                                                                                                 \
+    })
 
 #define CP(value)                                                                                                      \
-    u16 result = A - value;                                                                                            \
-    ZERO = result == 0x00;                                                                                             \
-    SUBTRACTION = true;                                                                                                \
-    HALF_CARRY = (result & 0x0F) > (A & 0x0F);                                                                         \
-    CARRY = result < 0x00;
+    ({                                                                                                                 \
+        u16 result = A - value;                                                                                        \
+        ZERO = result == 0x00;                                                                                         \
+        SUBTRACTION = true;                                                                                            \
+        HALF_CARRY = (result & 0x0F) > (A & 0x0F);                                                                     \
+        CARRY = result < 0x00;                                                                                         \
+    })
 
 #define DEC8(value)                                                                                                    \
-    u8 result = value - 1;                                                                                             \
-    ZERO = result == 0x00;                                                                                             \
-    SUBTRACTION = true;                                                                                                \
-    HALF_CARRY = (value & 0x0F) == 0x0F;                                                                               \
-    SET_##value(result);
+    ({                                                                                                                 \
+        u8 result = value - 1;                                                                                         \
+        ZERO = result == 0x00;                                                                                         \
+        SUBTRACTION = true;                                                                                            \
+        HALF_CARRY = (value & 0x0F) == 0x0F;                                                                           \
+        SET_##value(result);                                                                                           \
+    })
 
 #define INC8(value)                                                                                                    \
-    u8 result = value + 1;                                                                                             \
-    ZERO = result == 0x00;                                                                                             \
-    SUBTRACTION = false;                                                                                               \
-    HALF_CARRY = (value & 0x0F) == 0x00;                                                                               \
-    SET_##value(result);
+    ({                                                                                                                 \
+        u8 result = value + 1;                                                                                         \
+        ZERO = result == 0x00;                                                                                         \
+        SUBTRACTION = false;                                                                                           \
+        HALF_CARRY = (value & 0x0F) == 0x00;                                                                           \
+        SET_##value(result);                                                                                           \
+    })
 
 #define OR(value)                                                                                                      \
-    A |= value;                                                                                                        \
-    ZERO = A == 0x00;                                                                                                  \
-    SUBTRACTION = false;                                                                                               \
-    HALF_CARRY = false;                                                                                                \
-    CARRY = false;
+    ({                                                                                                                 \
+        A |= value;                                                                                                    \
+        ZERO = A == 0x00;                                                                                              \
+        SUBTRACTION = false;                                                                                           \
+        HALF_CARRY = false;                                                                                            \
+        CARRY = false;                                                                                                 \
+    })
 
 #define SBC(value)                                                                                                     \
-    u8 a = A;                                                                                                          \
-    A -= value + CARRY;                                                                                                \
-    ZERO = A == 0x00;                                                                                                  \
-    SUBTRACTION = true;                                                                                                \
-    HALF_CARRY = ((value & 0x0F) + CARRY) > (a & 0x0F);                                                                \
-    CARRY = (value + CARRY) > a;
+    ({                                                                                                                 \
+        u8 a = A;                                                                                                      \
+        A -= value + CARRY;                                                                                            \
+        ZERO = A == 0x00;                                                                                              \
+        SUBTRACTION = true;                                                                                            \
+        HALF_CARRY = ((value & 0x0F) + CARRY) > (a & 0x0F);                                                            \
+        CARRY = (value + CARRY) > a;                                                                                   \
+    })
 
 #define SUB(value)                                                                                                     \
-    u8 a = A;                                                                                                          \
-    A -= value;                                                                                                        \
-    ZERO = A == 0x00;                                                                                                  \
-    SUBTRACTION = true;                                                                                                \
-    HALF_CARRY = (value & 0x0F) > (a & 0x0F);                                                                          \
-    CARRY = value > a;
+    ({                                                                                                                 \
+        u8 a = A;                                                                                                      \
+        A -= value;                                                                                                    \
+        ZERO = A == 0x00;                                                                                              \
+        SUBTRACTION = true;                                                                                            \
+        HALF_CARRY = (value & 0x0F) > (a & 0x0F);                                                                      \
+        CARRY = value > a;                                                                                             \
+    })
 
 #define XOR(value)                                                                                                     \
-    A ^= value;                                                                                                        \
-    ZERO = A == 0x00;                                                                                                  \
-    SUBTRACTION = false;                                                                                               \
-    HALF_CARRY = false;                                                                                                \
-    CARRY = false;
+    ({                                                                                                                 \
+        A ^= value;                                                                                                    \
+        ZERO = A == 0x00;                                                                                              \
+        SUBTRACTION = false;                                                                                           \
+        HALF_CARRY = false;                                                                                            \
+        CARRY = false;                                                                                                 \
+    })
 
 #define ADD16(value)                                                                                                   \
-    u16 hl = HL;                                                                                                       \
-    u32 sum = hl + value;                                                                                              \
-    HL = sum & 0x0000FFFF;                                                                                             \
-    SUBTRACTION = false;                                                                                               \
-    HALF_CARRY = ((hl & 0x0FFF) + (value & 0x0FFF)) > 0x0FFF;                                                          \
-    CARRY = sum > 0x0000FFFF;
+    ({                                                                                                                 \
+        u16 hl = HL;                                                                                                   \
+        u32 sum = hl + value;                                                                                          \
+        HL = sum & 0x0000FFFF;                                                                                         \
+        SUBTRACTION = false;                                                                                           \
+        HALF_CARRY = ((hl & 0x0FFF) + (value & 0x0FFF)) > 0x0FFF;                                                      \
+        CARRY = sum > 0x0000FFFF;                                                                                      \
+    })
 
 #define DEC16(value) SET_##value(--value);
 
 #define INC16(value) SET_##value(++value);
 
 #define BIT(bit, value)                                                                                                \
-    ZERO = (value & (1 << bit)) == 0x00;                                                                               \
-    SUBTRACTION = false;                                                                                               \
-    HALF_CARRY = true;
+    ({                                                                                                                 \
+        ZERO = (value & (1 << bit)) == 0x00;                                                                           \
+        SUBTRACTION = false;                                                                                           \
+        HALF_CARRY = true;                                                                                             \
+    })
 
 #define RES(bit, value) SET_##value(value ^ (1 << bit));
 
 #define SET(bit, value) SET_##value(value | (1 << bit));
 
 #define SWAP(value)                                                                                                    \
-    SET_##value((value >> 4) | (value << 4));                                                                          \
-    ZERO = value == 0x00;                                                                                              \
-    SUBTRACTION = false;                                                                                               \
-    HALF_CARRY = false;                                                                                                \
-    CARRY = false;
+    ({                                                                                                                 \
+        SET_##value((value >> 4) | (value << 4));                                                                      \
+        ZERO = value == 0x00;                                                                                          \
+        SUBTRACTION = false;                                                                                           \
+        HALF_CARRY = false;                                                                                            \
+        CARRY = false;                                                                                                 \
+    })
+
+#define RL(value)                                                                                                      \
+    ({                                                                                                                 \
+        u8 result = (value << 1) | CARRY;                                                                              \
+        ZERO = result == 0x00;                                                                                         \
+        SUBTRACTION = false;                                                                                           \
+        HALF_CARRY = false;                                                                                            \
+        CARRY = (value & 0x80) == 0x80;                                                                                \
+        SET_##value(result);                                                                                           \
+    })
+
+#define RLA()                                                                                                          \
+    ({                                                                                                                 \
+        RL(A);                                                                                                         \
+        ZERO = false;                                                                                                  \
+    })
+
+#define RLC(value)                                                                                                     \
+    ({                                                                                                                 \
+        u8 result = (value << 1) | (value >> 7);                                                                       \
+        ZERO = result == 0x00;                                                                                         \
+        SUBTRACTION = false;                                                                                           \
+        HALF_CARRY = false;                                                                                            \
+        CARRY = (value & 0x80) == 0x80;                                                                                \
+        SET_##value(result);                                                                                           \
+    })
+
+#define RLCA()                                                                                                         \
+    ({                                                                                                                 \
+        RLC(A);                                                                                                        \
+        ZERO = false;                                                                                                  \
+    })
+
+#define RR(value)                                                                                                      \
+    ({                                                                                                                 \
+        u8 result = (value >> 1) | (CARRY << 7);                                                                       \
+        ZERO = result == 0x00;                                                                                         \
+        SUBTRACTION = false;                                                                                           \
+        HALF_CARRY = false;                                                                                            \
+        CARRY = value & 0x01;                                                                                          \
+        SET_##value(result);                                                                                           \
+    })
+
+#define RRA()                                                                                                          \
+    ({                                                                                                                 \
+        RR(A);                                                                                                         \
+        ZERO = false;                                                                                                  \
+    })
+
+#define RRC(value)                                                                                                     \
+    ({                                                                                                                 \
+        u8 result = (value >> 1) | (value << 7);                                                                       \
+        ZERO = result == 0x00;                                                                                         \
+        SUBTRACTION = false;                                                                                           \
+        HALF_CARRY = false;                                                                                            \
+        CARRY = value & 0x01;                                                                                          \
+        SET_##value(result);                                                                                           \
+    })
+
+#define RRCA()                                                                                                         \
+    ({                                                                                                                 \
+        RRC(A);                                                                                                        \
+        ZERO = false;                                                                                                  \
+    })
+
+#define SLA(value)                                                                                                     \
+    ({                                                                                                                 \
+        u8 result = value << 1;                                                                                        \
+        ZERO = result == 0x00;                                                                                         \
+        SUBTRACTION = false;                                                                                           \
+        HALF_CARRY = false;                                                                                            \
+        CARRY = (value & 0x80) == 0x80;                                                                                \
+        SET_##value(result);                                                                                           \
+    })
+
+#define SRA(value)                                                                                                     \
+    ({                                                                                                                 \
+        u8 result = (value >> 1) | (value & 0x80);                                                                     \
+        ZERO = result == 0x00;                                                                                         \
+        SUBTRACTION = false;                                                                                           \
+        HALF_CARRY = false;                                                                                            \
+        CARRY = value & 0x01;                                                                                          \
+        SET_##value(result);                                                                                           \
+    })
+
+#define SRL(value)                                                                                                     \
+    ({                                                                                                                 \
+        u8 result = value >> 1;                                                                                        \
+        ZERO = result == 0x00;                                                                                         \
+        SUBTRACTION = false;                                                                                           \
+        HALF_CARRY = false;                                                                                            \
+        CARRY = value & 0x01;                                                                                          \
+        SET_##value(result);                                                                                           \
+    })

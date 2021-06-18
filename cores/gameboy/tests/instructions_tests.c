@@ -15,11 +15,11 @@ void test_adc() {
     A = 0xF0;
     CARRY = true;
     ADC(0x0F);
-    TEST_ASSERT_EQUAL_HEX8(0x00, cpu->a);
-    TEST_ASSERT_TRUE(cpu->flags.zero);
-    TEST_ASSERT_FALSE(cpu->flags.subtraction);
-    TEST_ASSERT_TRUE(cpu->flags.half_carry);
-    TEST_ASSERT_TRUE(cpu->flags.carry);
+    TEST_ASSERT_EQUAL_HEX8(0x00, A);
+    TEST_ASSERT_TRUE(ZERO);
+    TEST_ASSERT_FALSE(SUBTRACTION);
+    TEST_ASSERT_TRUE(HALF_CARRY);
+    TEST_ASSERT_TRUE(CARRY);
 }
 
 void test_add8() {
@@ -34,153 +34,267 @@ void test_add8() {
 }
 
 void test_and() {
-    cpu->a = 0b00110101;
+    A = 0b00110101;
     AND(0b00101101);
-    TEST_ASSERT_EQUAL_HEX8(0b00100101, cpu->a);
-    TEST_ASSERT_FALSE(cpu->flags.zero);
-    TEST_ASSERT_FALSE(cpu->flags.subtraction);
-    TEST_ASSERT_TRUE(cpu->flags.half_carry);
-    TEST_ASSERT_FALSE(cpu->flags.carry);
+    TEST_ASSERT_EQUAL_HEX8(0b00100101, A);
+    TEST_ASSERT_FALSE(ZERO);
+    TEST_ASSERT_FALSE(SUBTRACTION);
+    TEST_ASSERT_TRUE(HALF_CARRY);
+    TEST_ASSERT_FALSE(CARRY);
 }
 
 void test_cp() {
     A = 0x05;
     CP(0xFD);
-    TEST_ASSERT_FALSE(cpu->flags.zero);
-    TEST_ASSERT_TRUE(cpu->flags.subtraction);
-    TEST_ASSERT_TRUE(cpu->flags.half_carry);
-    TEST_ASSERT_FALSE(cpu->flags.carry);
+    TEST_ASSERT_FALSE(ZERO);
+    TEST_ASSERT_TRUE(SUBTRACTION);
+    TEST_ASSERT_TRUE(HALF_CARRY);
+    TEST_ASSERT_FALSE(CARRY);
 }
 
 void test_dec8() {
     A = 0x1F;
     DEC8(A);
     TEST_ASSERT_EQUAL_HEX8(0x1E, A);
-    TEST_ASSERT_FALSE(cpu->flags.zero);
-    TEST_ASSERT_TRUE(cpu->flags.subtraction);
-    TEST_ASSERT_TRUE(cpu->flags.half_carry);
-    TEST_ASSERT_FALSE(cpu->flags.carry);
+    TEST_ASSERT_FALSE(ZERO);
+    TEST_ASSERT_TRUE(SUBTRACTION);
+    TEST_ASSERT_TRUE(HALF_CARRY);
+    TEST_ASSERT_FALSE(CARRY);
 }
 
 void test_inc8() {
     A = 0xB0;
     INC8(A);
-    TEST_ASSERT_EQUAL_HEX8(0xB1, result);
-    TEST_ASSERT_FALSE(cpu->flags.zero);
-    TEST_ASSERT_FALSE(cpu->flags.subtraction);
-    TEST_ASSERT_TRUE(cpu->flags.half_carry);
-    TEST_ASSERT_FALSE(cpu->flags.carry);
+    TEST_ASSERT_EQUAL_HEX8(0xB1, A);
+    TEST_ASSERT_FALSE(ZERO);
+    TEST_ASSERT_FALSE(SUBTRACTION);
+    TEST_ASSERT_TRUE(HALF_CARRY);
+    TEST_ASSERT_FALSE(CARRY);
 }
 
 void test_or() {
     A = 0b00110101;
     OR(0b00101101);
-    TEST_ASSERT_EQUAL_HEX8(0b00111101, cpu->a);
-    TEST_ASSERT_FALSE(cpu->flags.zero);
-    TEST_ASSERT_FALSE(cpu->flags.subtraction);
-    TEST_ASSERT_FALSE(cpu->flags.half_carry);
-    TEST_ASSERT_FALSE(cpu->flags.carry);
+    TEST_ASSERT_EQUAL_HEX8(0b00111101, A);
+    TEST_ASSERT_FALSE(ZERO);
+    TEST_ASSERT_FALSE(SUBTRACTION);
+    TEST_ASSERT_FALSE(HALF_CARRY);
+    TEST_ASSERT_FALSE(CARRY);
 }
 
 void test_sbc() {
     A = 0x1A;
-    cpu->flags.carry = true;
+    CARRY = true;
     SBC(0x1F);
-    TEST_ASSERT_EQUAL_HEX8(0xFA, cpu->a);
-    TEST_ASSERT_FALSE(cpu->flags.zero);
-    TEST_ASSERT_TRUE(cpu->flags.subtraction);
-    TEST_ASSERT_TRUE(cpu->flags.half_carry);
-    TEST_ASSERT_TRUE(cpu->flags.carry);
+    TEST_ASSERT_EQUAL_HEX8(0xFA, A);
+    TEST_ASSERT_FALSE(ZERO);
+    TEST_ASSERT_TRUE(SUBTRACTION);
+    TEST_ASSERT_TRUE(HALF_CARRY);
+    TEST_ASSERT_TRUE(CARRY);
 }
 
 void test_sub() {
-    cpu->a = 0xCC;
+    A = 0xCC;
     SUB(0xDC);
-    TEST_ASSERT_EQUAL_HEX8(0xF0, cpu->a);
-    TEST_ASSERT_FALSE(cpu->flags.zero);
-    TEST_ASSERT_TRUE(cpu->flags.subtraction);
-    TEST_ASSERT_FALSE(cpu->flags.half_carry);
-    TEST_ASSERT_TRUE(cpu->flags.carry);
+    TEST_ASSERT_EQUAL_HEX8(0xF0, A);
+    TEST_ASSERT_FALSE(ZERO);
+    TEST_ASSERT_TRUE(SUBTRACTION);
+    TEST_ASSERT_FALSE(HALF_CARRY);
+    TEST_ASSERT_TRUE(CARRY);
 }
 
 void test_xor() {
-    cpu->a = 0b00110101;
+    A = 0b00110101;
     XOR(0b00101101);
-    TEST_ASSERT_EQUAL_HEX8(0b00011000, cpu->a);
-    TEST_ASSERT_FALSE(cpu->flags.zero);
-    TEST_ASSERT_FALSE(cpu->flags.subtraction);
-    TEST_ASSERT_FALSE(cpu->flags.half_carry);
-    TEST_ASSERT_FALSE(cpu->flags.carry);
+    TEST_ASSERT_EQUAL_HEX8(0b00011000, A);
+    TEST_ASSERT_FALSE(ZERO);
+    TEST_ASSERT_FALSE(SUBTRACTION);
+    TEST_ASSERT_FALSE(HALF_CARRY);
+    TEST_ASSERT_FALSE(CARRY);
 }
 
 void test_add16() {
-    cpu->hl = 0x0FFF;
-    cpu->flags.carry = true;
+    HL = 0x0FFF;
+    CARRY = true;
     ADD16(0x0001);
-    TEST_ASSERT_EQUAL_HEX16(0x1000, cpu->hl);
-    TEST_ASSERT_FALSE(cpu->flags.zero);
-    TEST_ASSERT_FALSE(cpu->flags.subtraction);
-    TEST_ASSERT_TRUE(cpu->flags.half_carry);
-    TEST_ASSERT_FALSE(cpu->flags.carry);
+    TEST_ASSERT_EQUAL_HEX16(0x1000, HL);
+    TEST_ASSERT_FALSE(ZERO);
+    TEST_ASSERT_FALSE(SUBTRACTION);
+    TEST_ASSERT_TRUE(HALF_CARRY);
+    TEST_ASSERT_FALSE(CARRY);
 }
 
 void test_dec16() {
     BC = 0x0F0F;
     DEC16(BC);
     TEST_ASSERT_EQUAL_HEX16(0x0F0E, BC);
-    TEST_ASSERT_FALSE(cpu->flags.zero);
-    TEST_ASSERT_FALSE(cpu->flags.subtraction);
-    TEST_ASSERT_FALSE(cpu->flags.half_carry);
-    TEST_ASSERT_FALSE(cpu->flags.carry);
+    TEST_ASSERT_FALSE(ZERO);
+    TEST_ASSERT_FALSE(SUBTRACTION);
+    TEST_ASSERT_FALSE(HALF_CARRY);
+    TEST_ASSERT_FALSE(CARRY);
 }
 
 void test_inc16() {
     DE = 0xABCD;
     INC16(DE);
     TEST_ASSERT_EQUAL_HEX16(0xABCE, DE);
-    TEST_ASSERT_FALSE(cpu->flags.zero);
-    TEST_ASSERT_FALSE(cpu->flags.subtraction);
-    TEST_ASSERT_FALSE(cpu->flags.half_carry);
-    TEST_ASSERT_FALSE(cpu->flags.carry);
+    TEST_ASSERT_FALSE(ZERO);
+    TEST_ASSERT_FALSE(SUBTRACTION);
+    TEST_ASSERT_FALSE(HALF_CARRY);
+    TEST_ASSERT_FALSE(CARRY);
 }
 
 void test_bit() {
     A = 0b00010101;
     BIT(5, A);
-    TEST_ASSERT_TRUE(cpu->flags.zero);
-    TEST_ASSERT_FALSE(cpu->flags.subtraction);
-    TEST_ASSERT_TRUE(cpu->flags.half_carry);
-    TEST_ASSERT_FALSE(cpu->flags.carry);
+    TEST_ASSERT_TRUE(ZERO);
+    TEST_ASSERT_FALSE(SUBTRACTION);
+    TEST_ASSERT_TRUE(HALF_CARRY);
+    TEST_ASSERT_FALSE(CARRY);
 }
 
 void test_res() {
     A = 0b11111111;
     RES(5, A);
     TEST_ASSERT_EQUAL_HEX8(0b11011111, A);
-    TEST_ASSERT_FALSE(cpu->flags.zero);
-    TEST_ASSERT_FALSE(cpu->flags.subtraction);
-    TEST_ASSERT_FALSE(cpu->flags.half_carry);
-    TEST_ASSERT_FALSE(cpu->flags.carry);
+    TEST_ASSERT_FALSE(ZERO);
+    TEST_ASSERT_FALSE(SUBTRACTION);
+    TEST_ASSERT_FALSE(HALF_CARRY);
+    TEST_ASSERT_FALSE(CARRY);
 }
 
 void test_set() {
     A = 0b00000000;
     SET(2, A);
     TEST_ASSERT_EQUAL_HEX8(0b00000100, A);
-    TEST_ASSERT_FALSE(cpu->flags.zero);
-    TEST_ASSERT_FALSE(cpu->flags.subtraction);
-    TEST_ASSERT_FALSE(cpu->flags.half_carry);
-    TEST_ASSERT_FALSE(cpu->flags.carry);
+    TEST_ASSERT_FALSE(ZERO);
+    TEST_ASSERT_FALSE(SUBTRACTION);
+    TEST_ASSERT_FALSE(HALF_CARRY);
+    TEST_ASSERT_FALSE(CARRY);
 }
 
 void test_swap() {
     A = 0xAB;
     SWAP(A);
     TEST_ASSERT_EQUAL_HEX8(0xBA, A);
-    TEST_ASSERT_FALSE(cpu->flags.zero);
-    TEST_ASSERT_FALSE(cpu->flags.subtraction);
-    TEST_ASSERT_FALSE(cpu->flags.half_carry);
-    TEST_ASSERT_FALSE(cpu->flags.carry);
+    TEST_ASSERT_FALSE(ZERO);
+    TEST_ASSERT_FALSE(SUBTRACTION);
+    TEST_ASSERT_FALSE(HALF_CARRY);
+    TEST_ASSERT_FALSE(CARRY);
+}
+
+void test_rl() {
+    A = 0b10011001;
+    CARRY = true;
+    RL(A);
+    TEST_ASSERT_EQUAL_HEX8(0b00110011, A);
+    TEST_ASSERT_FALSE(ZERO);
+    TEST_ASSERT_FALSE(SUBTRACTION);
+    TEST_ASSERT_FALSE(HALF_CARRY);
+    TEST_ASSERT_TRUE(CARRY);
+}
+
+void test_rla() {
+    A = 0b00011110;
+    CARRY = true;
+    RLA();
+    TEST_ASSERT_EQUAL_HEX8(0b00111101, A);
+    TEST_ASSERT_FALSE(ZERO);
+    TEST_ASSERT_FALSE(SUBTRACTION);
+    TEST_ASSERT_FALSE(HALF_CARRY);
+    TEST_ASSERT_FALSE(CARRY);
+}
+
+void test_rlc() {
+    A = 0b10011001;
+    RLC(A);
+    TEST_ASSERT_EQUAL_HEX8(0b00110011, A);
+    TEST_ASSERT_FALSE(ZERO);
+    TEST_ASSERT_FALSE(SUBTRACTION);
+    TEST_ASSERT_FALSE(HALF_CARRY);
+    TEST_ASSERT_TRUE(CARRY);
+}
+
+void test_rlca() {
+    A = 0b10011110;
+    RLCA();
+    TEST_ASSERT_EQUAL_HEX8(0b00111101, A);
+    TEST_ASSERT_FALSE(ZERO);
+    TEST_ASSERT_FALSE(SUBTRACTION);
+    TEST_ASSERT_FALSE(HALF_CARRY);
+    TEST_ASSERT_TRUE(CARRY);
+}
+
+void test_rr() {
+    A = 0b10011001;
+    CARRY = true;
+    RR(A);
+    TEST_ASSERT_EQUAL_HEX8(0b11001100, A);
+    TEST_ASSERT_FALSE(ZERO);
+    TEST_ASSERT_FALSE(SUBTRACTION);
+    TEST_ASSERT_FALSE(HALF_CARRY);
+    TEST_ASSERT_TRUE(CARRY);
+}
+
+void test_rra() {
+    A = 0b00011110;
+    CARRY = true;
+    RRA();
+    TEST_ASSERT_EQUAL_HEX8(0b10001111, A);
+    TEST_ASSERT_FALSE(ZERO);
+    TEST_ASSERT_FALSE(SUBTRACTION);
+    TEST_ASSERT_FALSE(HALF_CARRY);
+    TEST_ASSERT_FALSE(CARRY);
+}
+
+void test_rrc() {
+    A = 0b10011001;
+    RRC(A);
+    TEST_ASSERT_EQUAL_HEX8(0b11001100, A);
+    TEST_ASSERT_FALSE(ZERO);
+    TEST_ASSERT_FALSE(SUBTRACTION);
+    TEST_ASSERT_FALSE(HALF_CARRY);
+    TEST_ASSERT_TRUE(CARRY);
+}
+
+void test_rrca() {
+    A = 0b10011110;
+    RRCA();
+    TEST_ASSERT_EQUAL_HEX8(0b01001111, A);
+    TEST_ASSERT_FALSE(ZERO);
+    TEST_ASSERT_FALSE(SUBTRACTION);
+    TEST_ASSERT_FALSE(HALF_CARRY);
+    TEST_ASSERT_FALSE(CARRY);
+}
+
+void test_sla() {
+    A = 0b10101010;
+    SLA(A);
+    TEST_ASSERT_EQUAL_HEX8(0b01010100, A);
+    TEST_ASSERT_FALSE(ZERO);
+    TEST_ASSERT_FALSE(SUBTRACTION);
+    TEST_ASSERT_FALSE(HALF_CARRY);
+    TEST_ASSERT_TRUE(CARRY);
+}
+
+void test_sra() {
+    A = 0b10101011;
+    SRA(A);
+    TEST_ASSERT_EQUAL_HEX8(0b11010101, A);
+    TEST_ASSERT_FALSE(ZERO);
+    TEST_ASSERT_FALSE(SUBTRACTION);
+    TEST_ASSERT_FALSE(HALF_CARRY);
+    TEST_ASSERT_TRUE(CARRY);
+}
+
+void test_srl() {
+    A = 0b10101011;
+    SRL(A);
+    TEST_ASSERT_EQUAL_HEX8(0b01010101, A);
+    TEST_ASSERT_FALSE(ZERO);
+    TEST_ASSERT_FALSE(SUBTRACTION);
+    TEST_ASSERT_FALSE(HALF_CARRY);
+    TEST_ASSERT_TRUE(CARRY);
 }
 
 int main() {
@@ -202,5 +316,16 @@ int main() {
     RUN_TEST(test_res);
     RUN_TEST(test_set);
     RUN_TEST(test_swap);
+    RUN_TEST(test_rl);
+    RUN_TEST(test_rla);
+    RUN_TEST(test_rlc);
+    RUN_TEST(test_rlca);
+    RUN_TEST(test_rr);
+    RUN_TEST(test_rra);
+    RUN_TEST(test_rrc);
+    RUN_TEST(test_rrca);
+    RUN_TEST(test_sla);
+    RUN_TEST(test_sra);
+    RUN_TEST(test_srl);
     return SUITE_END();
 }

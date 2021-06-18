@@ -38,6 +38,54 @@ void cpu_execute_cb(CPU *cpu, u8 opcode) {
     switch (opcode) {
         // OPERATIONS/INSTRUCTIONS                                       flags
         // code  instruction             mnemonic    cycles    bytes    Z N H C
+        OP(0x00, RLC(B))              // RLC B         2         2      Z 0 0 C
+        OP(0x01, RLC(C))              // RLC C         2         2      Z 0 0 C
+        OP(0x02, RLC(D))              // RLC D         2         2      Z 0 0 C
+        OP(0x03, RLC(E))              // RLC E         2         2      Z 0 0 C
+        OP(0x04, RLC(H))              // RLC H         2         2      Z 0 0 C
+        OP(0x05, RLC(L))              // RLC L         2         2      Z 0 0 C
+        OP(0x06, RLC(MEMORY))         // RLC (HL)      4         2      Z 0 0 C
+        OP(0x07, RLC(A))              // RLC A         2         2      Z 0 0 C
+        OP(0x08, RRC(B))              // RRC B         2         2      Z 0 0 C
+        OP(0x09, RRC(C))              // RRC C         2         2      Z 0 0 C
+        OP(0x0A, RRC(D))              // RRC D         2         2      Z 0 0 C
+        OP(0x0B, RRC(E))              // RRC E         2         2      Z 0 0 C
+        OP(0x0C, RRC(H))              // RRC H         2         2      Z 0 0 C
+        OP(0x0D, RRC(L))              // RRC L         2         2      Z 0 0 C
+        OP(0x0E, RRC(MEMORY))         // RRC (HL)      4         2      Z 0 0 C
+        OP(0x0F, RRC(A))              // RRC A         2         2      Z 0 0 C
+        OP(0x10, RL(B))               // RL B          2         2      Z 0 0 C
+        OP(0x11, RL(C))               // RL C          2         2      Z 0 0 C
+        OP(0x12, RL(D))               // RL D          2         2      Z 0 0 C
+        OP(0x13, RL(E))               // RL E          2         2      Z 0 0 C
+        OP(0x14, RL(H))               // RL H          2         2      Z 0 0 C
+        OP(0x15, RL(L))               // RL L          2         2      Z 0 0 C
+        OP(0x16, RL(MEMORY))          // RL (HL)       4         2      Z 0 0 C
+        OP(0x17, RL(A))               // RL A          2         2      Z 0 0 C
+        OP(0x18, RR(B))               // RR B          2         2      Z 0 0 C
+        OP(0x19, RR(C))               // RR C          2         2      Z 0 0 C
+        OP(0x1A, RR(D))               // RR D          2         2      Z 0 0 C
+        OP(0x1B, RR(E))               // RR E          2         2      Z 0 0 C
+        OP(0x1C, RR(H))               // RR H          2         2      Z 0 0 C
+        OP(0x1D, RR(L))               // RR L          2         2      Z 0 0 C
+        OP(0x1E, RR(MEMORY))          // RR (HL)       4         2      Z 0 0 C
+        OP(0x1F, RR(A))               // RR A          2         2      Z 0 0 C
+        OP(0x20, SLA(B))              // SLA B         2         2      Z 0 0 C
+        OP(0x21, SLA(C))              // SLA C         2         2      Z 0 0 C
+        OP(0x22, SLA(D))              // SLA D         2         2      Z 0 0 C
+        OP(0x23, SLA(E))              // SLA E         2         2      Z 0 0 C
+        OP(0x24, SLA(H))              // SLA H         2         2      Z 0 0 C
+        OP(0x25, SLA(L))              // SLA L         2         2      Z 0 0 C
+        OP(0x26, SLA(MEMORY))         // SLA (HL)      4         2      Z 0 0 C
+        OP(0x27, SLA(A))              // SLA A         2         2      Z 0 0 C
+        OP(0x28, SRA(B))              // SRA B         2         2      Z 0 0 C
+        OP(0x29, SRA(C))              // SRA C         2         2      Z 0 0 C
+        OP(0x2A, SRA(D))              // SRA D         2         2      Z 0 0 C
+        OP(0x2B, SRA(E))              // SRA E         2         2      Z 0 0 C
+        OP(0x2C, SRA(H))              // SRA H         2         2      Z 0 0 C
+        OP(0x2D, SRA(L))              // SRA L         2         2      Z 0 0 C
+        OP(0x2E, SRA(MEMORY))         // SRA (HL)      4         2      Z 0 0 C
+        OP(0x2F, SRA(A))              // SRA A         2         2      Z 0 0 C
         OP(0x30, SWAP(B))             // SWAP B        2         2      Z 0 0 0
         OP(0x31, SWAP(C))             // SWAP B        2         2      Z 0 0 0
         OP(0x32, SWAP(D))             // SWAP B        2         2      Z 0 0 0
@@ -46,6 +94,14 @@ void cpu_execute_cb(CPU *cpu, u8 opcode) {
         OP(0x35, SWAP(L))             // SWAP B        2         2      Z 0 0 0
         OP(0x36, SWAP(MEMORY))        // SWAP (HL)     4         2      Z 0 0 0
         OP(0x37, SWAP(A))             // SWAP B        2         2      Z 0 0 0
+        OP(0x38, SRL(B))              // SRL B         2         2      Z 0 0 C
+        OP(0x39, SRL(C))              // SRL C         2         2      Z 0 0 C
+        OP(0x3A, SRL(D))              // SRL D         2         2      Z 0 0 C
+        OP(0x3B, SRL(E))              // SRL E         2         2      Z 0 0 C
+        OP(0x3C, SRL(H))              // SRL H         2         2      Z 0 0 C
+        OP(0x3D, SRL(L))              // SRL L         2         2      Z 0 0 C
+        OP(0x3E, SRL(MEMORY))         // SRL (HL)      4         2      Z 0 0 C
+        OP(0x3F, SRL(A))              // SRL A         2         2      Z 0 0 C
         OP(0x40, BIT(0, B))           // BIT 0,B       2         2      Z 0 1 -
         OP(0x41, BIT(0, C))           // BIT 0,C       2         2      Z 0 1 -
         OP(0x42, BIT(0, D))           // BIT 0,D       2         2      Z 0 1 -
@@ -248,17 +304,21 @@ void cpu_execute(CPU *cpu, u8 opcode) {
         OP(0x03, INC16(BC))           // INC BC        2         1      - - - -
         OP(0x04, INC8(B))             // INC B         1         1      Z 0 H -
         OP(0x05, DEC8(B))             // DEC B         1         1      Z 1 H -
+        OP(0x07, RLCA())              // RLCA          1         1      0 0 0 C
         OP(0x09, ADD16(BC))           // ADD HL,BC     2         1      - 0 H C
         OP(0x0B, DEC16(BC))           // DEC BC        2         1      - - - -
         OP(0x0C, INC8(C))             // INC C         1         1      Z 0 H -
         OP(0x0D, DEC8(C))             // DEC C         1         1      Z 1 H -
+        OP(0x0F, RRCA())              // RRCA          1         1      0 0 0 C
         OP(0x13, INC16(DE))           // INC DE        2         1      - - - -
         OP(0x14, INC8(D))             // INC D         1         1      Z 0 H -
         OP(0x15, DEC8(D))             // DEC D         1         1      Z 1 H -
+        OP(0x17, RLA())               // RLA           1         1      0 0 0 C
         OP(0x19, ADD16(DE))           // ADD HL,DE     2         1      - 0 H C
         OP(0x1B, DEC16(DE))           // DEC DE        2         1      - - - -
         OP(0x1C, INC8(E))             // INC E         1         1      Z 0 H -
         OP(0x1D, DEC8(E))             // DEC E         1         1      Z 1 H -
+        OP(0x1F, RRA())               // RRA           1         1      0 0 0 C
         OP(0x23, INC16(HL))           // INC HL        2         1      - - - -
         OP(0x24, INC8(H))             // INC H         1         1      Z 0 H -
         OP(0x25, DEC8(H))             // DEC H         1         1      Z 1 H -
